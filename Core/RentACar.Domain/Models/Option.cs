@@ -12,5 +12,6 @@ namespace RentACar.Domain.Models
         public string OpsiyonName { get; set; }
         public decimal OpsiyonPrice { get; set; }
         public ICollection<CarOption>? CarOptions { get; set; }
+        public ICollection<ReservationOption>? ReservationOptions { get; set; }
     }
 }
