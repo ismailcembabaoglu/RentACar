@@ -23,6 +23,7 @@ namespace RentACar.Domain.Models
         public decimal TotalKm { get; set; }
         public bool IsAc { get; set; }
         public ICollection<CarOption>? CarOptions { get; set; }
+        public ICollection<CarLocation>? CarLocations { get; set; }
         public ICollection<Reservation>? Reservations { get; set; }
 
     }

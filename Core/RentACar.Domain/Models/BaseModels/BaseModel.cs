@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RentACar.Domain.Models.BaseModels
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
         public Guid Id { get; set; }
         public string CreatedUser { get; set; }

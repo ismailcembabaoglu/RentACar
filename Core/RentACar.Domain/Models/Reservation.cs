@@ -17,6 +17,7 @@ namespace RentACar.Domain.Models
         public decimal? AdditionalProductPrice { get; set; }
         public decimal TotalPrice { get; set; }
         public ICollection<ReservationOption>? ReservationOptions { get; set; }
+        public ICollection<Reservation>? Reservations { get; set; }
 
     }
 }
