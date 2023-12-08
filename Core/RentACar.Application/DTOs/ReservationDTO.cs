@@ -11,6 +11,7 @@ namespace RentACar.Application.DTOs
     {
         public Guid CarId { get; set; }
         public string? CarName { get; set; }
+        public string? CarModel { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal RentPrice { get; set; }
