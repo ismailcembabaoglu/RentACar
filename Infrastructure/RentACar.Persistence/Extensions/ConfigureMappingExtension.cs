@@ -64,7 +64,7 @@ namespace RentACar.Persistence.Extensions
             CreateMap<ServiceDTO, Service>();
 
             CreateMap<User, UserDTO>()
-                .ForMember(c=>c.FullName,y=>y.MapFrom(y=>y.FirstName+" "+y.LastName);
+                .ForMember(c=>c.FullName,y=>y.MapFrom(y=>y.FirstName+" "+y.LastName));
             CreateMap<UserDTO, User>();
         }
     }
