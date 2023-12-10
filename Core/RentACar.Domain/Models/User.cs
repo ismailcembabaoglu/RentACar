@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RentACar.Domain.Models
 {
-    public class User:BaseModel
+    public class User : BaseModel
     {
         public string FirstName { get; set; }
 

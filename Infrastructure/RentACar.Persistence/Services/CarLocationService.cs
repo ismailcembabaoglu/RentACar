@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace RentACar.Persistence.Services
 {
 
-    public class CarLocationService:ICarLocationLocationService
+    public class CarLocationService:ICarLocationService
     {
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
@@ -68,13 +68,13 @@ namespace RentACar.Persistence.Services
 
         public async Task<CarLocationDTO> UpdateCarLocation(CarLocationDTO car)
         {
-            var dbCar = await context.CarLocations.Include(c=>c.Car).Include(c=>c.Location).Where(c => c.Id == car.Id).FirstOrDefaultAsync();
-            if (dbCar == null)
+            var dbCarLocation = await context.CarLocations.Include(c=>c.Car).Include(c=>c.Location).Where(c => c.Id == car.Id).FirstOrDefaultAsync();
+            if (dbCarLocation == null)
                 throw new Exception("Lokasyon Bulunamadığından Dolayı Güncelleme İşlemi Başarısız");
-            mapper.Map(car, dbCar);
+            mapper.Map(car, dbCarLocation);
 
             int result = await context.SaveChangesAsync();
-            return mapper.Map<CarLocationDTO>(dbCar);
+            return mapper.Map<CarLocationDTO>(dbCarLocation);
         }
     }
 }

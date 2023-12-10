@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RentACarLocation.Application.IServices
 {
-    public interface ICarLocationLocationService
+    public interface ICarLocationService
     {
           public Task<List<CarLocationDTO>> GetCarLocations();
         public Task<CarLocationDTO> CreateCarLocation(CarLocationDTO CarLocation);
