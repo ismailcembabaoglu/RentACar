@@ -14,5 +14,6 @@ namespace RentACar.Application.IServices
         public Task<UserDTO> UpdateUser(UserDTO User);
         public Task<bool> DeleteUserId(Guid id);
         public Task<UserDTO> GetUserById(Guid id);
+        public Task<UserLoginResponseDTO> Login(string Email, string Password);
     }
 }
