@@ -26,7 +26,7 @@ namespace RentACar.Persistence.Services
             configuration = _configuration;
             context = _context;
         }
-        public async Task<CarOptionDTO> CreateCarOptionDTO(CarOptionDTO CarOption)
+        public async Task<CarOptionDTO> CreateCarOption(CarOptionDTO CarOption)
         {
             var dbCarOption = await context.CarOptions.Include(c => c.Car)
                 .Include(c => c.Option).Where(c => c.Id == CarOption.Id).FirstOrDefaultAsync();
