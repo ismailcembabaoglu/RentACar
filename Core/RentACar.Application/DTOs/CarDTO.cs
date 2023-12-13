@@ -12,6 +12,7 @@ namespace RentACar.Application.DTOs
     {
         public string CarName { get; set; }
         public string CarModel { get; set; }
+        public string? Photo { get; set; }
         public string Person { get; set; }
         public string Luggage { get; set; }
         public int Door { get; set; }
