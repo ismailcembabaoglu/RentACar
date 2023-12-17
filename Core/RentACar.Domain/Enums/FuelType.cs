@@ -8,10 +8,10 @@ namespace RentACar.Domain.Enums
 {
     public enum FuelType
     {
-        Dizel=0,
-        Benzin=1,
-        Hybrid=2,
-        Lpg=3,
-        Elektirik=4
+        Dizel,
+        Benzin,
+        Hybrid,
+        Lpg,
+        Elektirik
     }
 }

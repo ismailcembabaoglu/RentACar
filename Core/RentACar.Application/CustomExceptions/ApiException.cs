@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentACar.Persistence.CustomExceptions
+namespace RentACar.Application.CustomExceptions
 {
     public class ApiException : Exception
     {

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.DTOs;
 using RentACar.Application.IServices;
-using RentACar.Persistence.ResponseModels;
+using RentACar.Application.ResponseModels;
+
 
 namespace RentACar.Server.Controllers
 {

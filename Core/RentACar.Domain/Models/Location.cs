@@ -10,6 +10,6 @@ namespace RentACar.Domain.Models
     public class Location:BaseModel
     {
         public string City { get; set; }
-        public ICollection<CarLocation> CarLocations { get; set; }
+        public ICollection<CarLocation>? CarLocations { get; set; }
     }
 }

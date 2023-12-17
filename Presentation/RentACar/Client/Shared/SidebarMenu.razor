@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+
+<RadzenHeader>
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+        <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+        <RadzenLabel Text="Eagle Rent A Car" />
+    </RadzenStack>
+</RadzenHeader>
+<RadzenSidebar Responsive="false" Style="width: max-content">
+
+
+    <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)" ShowArrow="false">
+        <AuthorizeView>
+
+            <Authorized>
+                <RadzenPanelMenuItem Text="Overview" Icon="home" />
+                <RadzenPanelMenuItem Text="Dashboard" Icon="dashboard" />
+                <RadzenPanelMenuItem Text="Arabalar" Path="/admin/cars" Icon="directions_car" />
+                <RadzenPanelMenuItem Text="UI Fundamentals" Icon="auto_awesome">
+                    <RadzenPanelMenuItem Text="Themes" Icon="color_lens" />
+                    <RadzenPanelMenuItem Text="Colors" Icon="invert_colors" />
+                    
+                </RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Text="Çıkış Yap" Path="/logout" Icon="dashboard" />
+            </Authorized>
+
+            <NotAuthorized>
+                <RadzenPanelMenuItem Text="Çıkış Yap" Path="/login" Icon="dashboard" />
+            </NotAuthorized>
+
+        </AuthorizeView>
+    </RadzenPanelMenu>
+
+</RadzenSidebar>
+
+
+
+@code {
+
+    bool sidebarExpanded = true;
+}

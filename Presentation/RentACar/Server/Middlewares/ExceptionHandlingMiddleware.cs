@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Newtonsoft.Json;
-using RentACar.Persistence.ResponseModels;
+using RentACar.Application.ResponseModels;
 
 namespace RentACar.Server.Middlewares
 {

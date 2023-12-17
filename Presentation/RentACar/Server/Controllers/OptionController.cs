@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RentACar.Application.DTOs;
 using RentACar.Application.IServices;
-using RentACar.Persistence.ResponseModels;
+using RentACar.Application.ResponseModels;
 using RentACar.Persistence.Services;
 
 namespace RentACar.Server.Controllers

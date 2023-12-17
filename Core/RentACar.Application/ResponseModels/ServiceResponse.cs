@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentACar.Persistence.ResponseModels
+namespace RentACar.Application.ResponseModels
 {
     public class ServiceResponse<T>:BaseResponse
     {
