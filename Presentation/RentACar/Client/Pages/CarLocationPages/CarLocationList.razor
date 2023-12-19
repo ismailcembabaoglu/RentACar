@@ -6,7 +6,7 @@
 @using RentACar.Domain.Models
 @layout MainAdminLayout
 
-<RadzenButton Shade="Shade.Dark" Click=goCreateCarLocationPage Icon="add" Variant="Variant.Flat" Text="Yeni Araba Ekle" ButtonStyle="ButtonStyle.Success" />
+<RadzenButton Shade="Shade.Dark" Click=goCreateCarLocationPage Icon="add" Variant="Variant.Flat" Text="Araba Lokasyonu Ekle" ButtonStyle="ButtonStyle.Success" />
 
 <RadzenDataGrid AllowFiltering="true"
                 FilterMode="FilterMode.Simple"
@@ -63,7 +63,7 @@
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            CarLocations = await Client.GetServiceResponseAsync<List<CarLocationDTO>>("/api/carLocation/carLocations", token);
+            CarLocations = await Client.GetServiceResponseAsync<List<CarLocationDTO>>("/api/carLocatio/carLocations", token);
         }
         catch (ApiException ex)
         {
@@ -81,7 +81,7 @@
     }
     protected void goUpdateCarLocationPage(Guid Id)
     {
-        NavigationManager.NavigateTo("/admin/carLocation/edit/" + Id);
+        NavigationManager.NavigateTo("/admin/carLocations/edit/" + Id);
     }
     protected async Task DeleteCarLocation(Guid Id)
     {
@@ -90,7 +90,7 @@
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/carLocation/delete", Id, token);
+            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/carLocatio/delete", Id, token);
             if (deleted)
             {
                 await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlandı", 4);

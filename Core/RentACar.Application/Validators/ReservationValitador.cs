@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace RentACar.Application.Validators
 {
-    public class ReservationValitadar : AbstractValidator<ReservationDTO>
+    public class ReservationValitador : AbstractValidator<ReservationDTO>
     {
-        public ReservationValitadar() 
+        public ReservationValitador() 
         {
             RuleFor(c => c.RentPrice).NotEmpty().WithMessage("Kiralık Fiyat Boş Geçilemez!!");
             RuleFor(c => c.TotalPrice).NotEmpty().WithMessage("Toplam Fiyat Boş Geçilemez!!");

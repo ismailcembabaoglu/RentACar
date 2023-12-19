@@ -1,4 +1,4 @@
-﻿@page "/admin/Locations"
+﻿@page "/admin/Reservations"
 @using Blazored.LocalStorage
 @using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
@@ -6,7 +6,7 @@
 @using RentACar.Domain.Models
 @layout MainAdminLayout
 
-<RadzenButton Shade="Shade.Dark" Click=goCreateLocationPage Icon="add" Variant="Variant.Flat" Text="Lokasyon Ekle" ButtonStyle="ButtonStyle.Success" />
+<RadzenButton Shade="Shade.Dark" Click=goCreateReservationPage Icon="add" Variant="Variant.Flat" Text="Rezervasyon Ekle" ButtonStyle="ButtonStyle.Success" />
 
 
 <RadzenDataGrid AllowFiltering="true"
@@ -16,25 +16,29 @@
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 AllowColumnPicking="true"
                 AllowPaging="true" PageSize="10"
-                AllowSorting="true" Data="@Locations"
-                TItem="LocationDTO">
+                AllowSorting="true" Data="@Reservations"
+                TItem="ReservationDTO">
     <Columns>
-        <RadzenDataGridColumn TItem="LocationDTO" Context="Location" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
-            <Template Context="Location">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goUpdateLocationPage(Location.Id))">
+        <RadzenDataGridColumn TItem="ReservationDTO" Context="Reservation" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="Reservation">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goUpdateReservationPage(Reservation.Id))">
                 </RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteLocation(Location.Id))">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteReservation(Reservation.Id))">
                 </RadzenButton>
             </Template>
         </RadzenDataGridColumn>
 
-        
-        <RadzenDataGridColumn TItem="LocationDTO" Property="City" Title="Şehir" />
 
-        <RadzenDataGridColumn TItem="LocationDTO" Property="Decription" Title="Lokasyon adresi" />
+        <RadzenDataGridColumn TItem="ReservationDTO" Property="CarName" Title="Araba İsmi" />
+
+        <RadzenDataGridColumn TItem="ReservationDTO" Property="CarModel" Title="Araba Modeli" />
+        <RadzenDataGridColumn TItem="ReservationDTO" Property="RentPrice" Title="Kiralık Fiyatı" />
+        <RadzenDataGridColumn TItem="ReservationDTO" Property="AdditionalProductPrice" Title="Ek Ürün Fiyatı"/>
+        <RadzenDataGridColumn TItem="ReservationDTO" Property="TotalPrice" Title="Toplam Fiyat" />
 
     </Columns>
 </RadzenDataGrid>
+
 
 @code {
     [Inject]
@@ -48,7 +52,7 @@
     [Inject]
     ILocalStorageService localStorageService { get; set; }
 
-    protected IEnumerable<LocationDTO> Locations;
+    protected IEnumerable<ReservationDTO> Reservations;
 
 
     protected override async Task OnInitializedAsync()
@@ -61,7 +65,7 @@
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            Locations = await Client.GetServiceResponseAsync<List<LocationDTO>>("/api/Locatio/Locations", token);
+            Reservations = await Client.GetServiceResponseAsync<List<ReservationDTO>>("/api/Reserve/Reservations", token, true);
         }
         catch (ApiException ex)
         {
@@ -73,26 +77,26 @@
             await ModalManager.ShowMessageAsync("Exception Exception", ex.Message);
         }
     }
-    protected void goCreateLocationPage()
+    protected void goCreateReservationPage()
     {
-        NavigationManager.NavigateTo("/admin/Locations/add");
+        NavigationManager.NavigateTo("/admin/reservations/add");
     }
-    protected void goUpdateLocationPage(Guid Id)
+    protected void goUpdateReservationPage(Guid Id)
     {
-        NavigationManager.NavigateTo("/admin/Locations/edit/" + Id);
+        NavigationManager.NavigateTo("/admin/reservation/edit/" + Id);
     }
-    protected async Task DeleteLocation(Guid Id)
+    protected async Task DeleteReservation(Guid Id)
     {
-        bool confirmed = await ModalManager.ConfirmationAsync("Silme İşlemi", " Locasyonu silmek istediğinize eminmisiniz ?");
+        bool confirmed = await ModalManager.ConfirmationAsync("Silme İşlemi", " rezervasyonu silmek istediğinize eminmisiniz ?");
         if (!confirmed) return;
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/Locatio/delete", Id, token);
+            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/reservation/delete", Id, token);
             if (deleted)
             {
                 await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlandı", 4);
-                NavigationManager.NavigateTo("/admin/Locations", true);
+                NavigationManager.NavigateTo("/admin/reservations", true);
             }
             else
             {

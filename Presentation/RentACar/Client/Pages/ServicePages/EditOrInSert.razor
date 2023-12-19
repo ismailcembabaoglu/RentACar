@@ -1,5 +1,5 @@
-﻿@page "/admin/locations/add"
-@page "/admin/locations/edit/{LocationId:guid}"
+﻿@page "/admin/services/add"
+@page "/admin/services/edit/{ServiceId:guid}"
 @layout MainAdminLayout
 @using Blazored.LocalStorage
 @using Morris.Blazor.FluentValidation
@@ -11,35 +11,28 @@
 @using RentACar.Domain.Enums
 @using RentACar.Domain.Enums.Helper
 
-<EditForm Model="@location" OnValidSubmit="SubmitForm">
-    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<LocationValidator>()) OnTransformModel=OnTransformModel />
+
+<EditForm Model="@service" OnValidSubmit="SubmitForm">
+    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<ServiceValidator>()) OnTransformModel=OnTransformModel />
     <RadzenColumn Size="12" Style="width:%60" SizeMD="6">
         <RadzenStack>
-            <RadzenFieldset Text="Lokasyon Ekleme Sayfası">
+            <RadzenFieldset Text="Rezervasyon Ekleme Sayfası">
                 <RadzenStack Gap="1rem">
 
-                 
+
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Şehir" />
+                            <RadzenLabel Text="Hizmet Adı" />
                         </RadzenColumn>
                         <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextBox Style="width: 50%;" @bind-Value="location.City" Name="City" />
-                            <ValidationMessage For="@(() => location.City)" />
+                            <RadzenTextBox Style="width: 50%;" @bind-Value="service.ServiceName" Name="ServiceName" />
+                            <ValidationMessage For="@(() => service.ServiceName)" />
                         </RadzenColumn>
 
                     </RadzenRow>
-                    <RadzenRow AlignItems="AlignItems.Center">
-                        <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Lokasyon" />
-                        </RadzenColumn>
-                        <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextArea Style="width: 50%;" @bind-Value="location.Decription" Name="Decription" />
-                            <ValidationMessage For="@(() => location.Decription)" />
-                        </RadzenColumn>
-                    </RadzenRow>
-                    
-                    
+                   
+
+
                     @*                     <RadzenRow AlignItems="AlignItems.Center">
                     <RadzenColumn Size="12" SizeMD="4">
                     <RadzenLabel Text="Expiry Date" />
@@ -69,7 +62,7 @@
 
 @code {
     [Parameter]
-    public Guid LocationId { get; set; }
+    public Guid ServiceId { get; set; }
     [Inject]
     public HttpClient HttpClient { get; set; }
 
@@ -80,45 +73,45 @@
     public NavigationManager NavigationManager { get; set; }
     [Inject]
     ILocalStorageService localStorageService { get; set; }
-    
-    private LocationDTO location = new LocationDTO();
-    
+
+    private ServiceDTO service = new ServiceDTO();
+
     protected async override Task OnInitializedAsync()
     {
-        
-        if (LocationId != null && LocationId != Guid.Empty)
+
+        if (ServiceId != null && ServiceId != Guid.Empty)
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            location = await HttpClient.GetServiceResponseAsync<LocationDTO>("api/Locatio/LocationById/" + LocationId, token, true);
+            service = await HttpClient.GetServiceResponseAsync<ServiceDTO>("api/Service/ServiceById/" + ServiceId, token, true);
         }
 
 
     }
-    async Task editOrUpdate(LocationDTO locationDTO)
+    async Task editOrUpdate(ServiceDTO serviceDTO)
     {
 
         try
         {
 
-            String url = "api/Locatio/create";
-            location = locationDTO;
+            String url = "api/Service/create";
+            service = serviceDTO;
             // Update
-            if (LocationId != null && LocationId != Guid.Empty)
+            if (ServiceId != null && ServiceId != Guid.Empty)
             {
-                url = "api/Locatio/update";
-                location.UpdatedDate = DateTime.UtcNow;
-                location.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
+                url = "api/Service/update";
+                service.UpdatedDate = DateTime.UtcNow;
+                service.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                location.CreateDate = DateTime.UtcNow;
-                location.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
+                service.CreateDate = DateTime.UtcNow;
+                service.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");
 
-            location = await HttpClient.PostGetServiceResponseAsync<LocationDTO, LocationDTO>(url, location, token, true);
+            service = await HttpClient.PostGetServiceResponseAsync<ServiceDTO, ServiceDTO>(url, service, token, true);
 
-            NavigationManager.NavigateTo("/admin/locations");
+            NavigationManager.NavigateTo("/admin/services");
         }
         catch (ApiException ex)
         {
@@ -137,12 +130,12 @@
     {
         if (editContext.Validate())
         {
-            await editOrUpdate((LocationDTO)editContext.Model);
+            await editOrUpdate((ServiceDTO)editContext.Model);
         }
     }
     void goBackGroupList()
     {
-        NavigationManager.NavigateTo("/admin/locations");
+        NavigationManager.NavigateTo("/admin/services");
     }
     private object OnTransformModel(object model)
     {

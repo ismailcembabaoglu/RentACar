@@ -1,5 +1,5 @@
-﻿@page "/admin/locations/add"
-@page "/admin/locations/edit/{LocationId:guid}"
+﻿@page "/admin/carOptions/add"
+@page "/admin/carOptions/edit/{CarOptionId:guid}"
 @layout MainAdminLayout
 @using Blazored.LocalStorage
 @using Morris.Blazor.FluentValidation
@@ -11,35 +11,37 @@
 @using RentACar.Domain.Enums
 @using RentACar.Domain.Enums.Helper
 
-<EditForm Model="@location" OnValidSubmit="SubmitForm">
-    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<LocationValidator>()) OnTransformModel=OnTransformModel />
+<EditForm Model="@carOption" OnValidSubmit="SubmitForm">
+    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<CarOptionValidator>()) OnTransformModel=OnTransformModel />
     <RadzenColumn Size="12" Style="width:%60" SizeMD="6">
         <RadzenStack>
-            <RadzenFieldset Text="Lokasyon Ekleme Sayfası">
+            <RadzenFieldset Text="Araba Seçeneği Ekleme Sayfası">
                 <RadzenStack Gap="1rem">
 
-                 
+
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Şehir" />
+                            <RadzenLabel Text="Araba Adı" />
                         </RadzenColumn>
                         <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextBox Style="width: 50%;" @bind-Value="location.City" Name="City" />
-                            <ValidationMessage For="@(() => location.City)" />
+                            <RadzenDropDown @bind-Value="carOption.CarId" AllowClear="true" Placeholder="seçim yapınız" Data="@cars" Style="width: 50%;" TextProperty="CarName" ValueProperty="Id" Name="Id">
+                            </RadzenDropDown>
+                            <ValidationMessage For="@(() => carOption.CarId)" />
                         </RadzenColumn>
 
                     </RadzenRow>
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Lokasyon" />
+                            <RadzenLabel Text="Seçenek" />
                         </RadzenColumn>
                         <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextArea Style="width: 50%;" @bind-Value="location.Decription" Name="Decription" />
-                            <ValidationMessage For="@(() => location.Decription)" />
+                            <RadzenDropDown @bind-Value="carOption.OptionId" AllowClear="true" Placeholder="seçim yapınız" Data="@options" Style="width: 50%;" TextProperty="OpsiyonName" ValueProperty="Id" Name="Id" />
+
+                            <ValidationMessage For="@(() => carOption.OptionId)" />
                         </RadzenColumn>
                     </RadzenRow>
-                    
-                    
+
+
                     @*                     <RadzenRow AlignItems="AlignItems.Center">
                     <RadzenColumn Size="12" SizeMD="4">
                     <RadzenLabel Text="Expiry Date" />
@@ -61,15 +63,16 @@
         </RadzenStack>
     </RadzenColumn>
     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-4">
-        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Kaydet" />
+        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save"  Text="Kaydet" />
         <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Large" Icon="cancel" Text="Geri Dön" Click="@goBackGroupList" />
     </RadzenStack>
 </EditForm>
 
 
+
 @code {
     [Parameter]
-    public Guid LocationId { get; set; }
+    public Guid CarOptionId { get; set; }
     [Inject]
     public HttpClient HttpClient { get; set; }
 
@@ -80,45 +83,50 @@
     public NavigationManager NavigationManager { get; set; }
     [Inject]
     ILocalStorageService localStorageService { get; set; }
-    
-    private LocationDTO location = new LocationDTO();
-    
+
+    private CarOptionDTO carOption = new CarOptionDTO();
+
+    private List<CarDTO> cars = new List<CarDTO>();
+    private List<OptionDTO> options = new List<OptionDTO>();
+
     protected async override Task OnInitializedAsync()
     {
-        
-        if (LocationId != null && LocationId != Guid.Empty)
+        string token = await localStorageService.GetItemAsStringAsync("token");
+        cars = await HttpClient.GetServiceResponseAsync<List<CarDTO>>("api/car/cars/", token);
+        options = await HttpClient.GetServiceResponseAsync<List<OptionDTO>>("api/Option/Options", token);
+        if (CarOptionId != null && CarOptionId != Guid.Empty)
         {
-            string token = await localStorageService.GetItemAsStringAsync("token");
-            location = await HttpClient.GetServiceResponseAsync<LocationDTO>("api/Locatio/LocationById/" + LocationId, token, true);
+
+            carOption = await HttpClient.GetServiceResponseAsync<CarOptionDTO>("api/CarOption/CarOptionById/" + CarOptionId, token, true);
         }
 
 
     }
-    async Task editOrUpdate(LocationDTO locationDTO)
+    async Task editOrUpdate(CarOptionDTO carOptionDTO)
     {
 
         try
         {
 
-            String url = "api/Locatio/create";
-            location = locationDTO;
+            String url = "api/CarOption/create";
+            carOption = carOptionDTO;
             // Update
-            if (LocationId != null && LocationId != Guid.Empty)
+            if (CarOptionId != null && CarOptionId != Guid.Empty)
             {
-                url = "api/Locatio/update";
-                location.UpdatedDate = DateTime.UtcNow;
-                location.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
+                url = "api/CarOption/update";
+                carOption.UpdatedDate = DateTime.UtcNow;
+                carOption.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                location.CreateDate = DateTime.UtcNow;
-                location.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
+                carOption.CreateDate = DateTime.UtcNow;
+                carOption.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");
 
-            location = await HttpClient.PostGetServiceResponseAsync<LocationDTO, LocationDTO>(url, location, token, true);
+            carOption = await HttpClient.PostGetServiceResponseAsync<CarOptionDTO, CarOptionDTO>(url, carOption, token, true);
 
-            NavigationManager.NavigateTo("/admin/locations");
+            NavigationManager.NavigateTo("/admin/carOptions");
         }
         catch (ApiException ex)
         {
@@ -137,12 +145,12 @@
     {
         if (editContext.Validate())
         {
-            await editOrUpdate((LocationDTO)editContext.Model);
+            await editOrUpdate((CarOptionDTO)editContext.Model);
         }
     }
     void goBackGroupList()
     {
-        NavigationManager.NavigateTo("/admin/locations");
+        NavigationManager.NavigateTo("/admin/carOptions");
     }
     private object OnTransformModel(object model)
     {

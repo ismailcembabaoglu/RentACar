@@ -1,0 +1,184 @@
+﻿@page "/admin/reservations/add"
+@page "/admin/reservations/edit/{ReservationId:guid}"
+@layout MainAdminLayout
+@using Blazored.LocalStorage
+@using Morris.Blazor.FluentValidation
+@using Morris.Blazor.Validation
+@using RentACar.Application.CustomExceptions
+@using RentACar.Application.DTOs
+@using RentACar.Application.Validators
+@using RentACar.Client.Utils
+@using RentACar.Domain.Enums
+@using RentACar.Domain.Enums.Helper
+
+
+<EditForm Model="@reservation" OnValidSubmit="SubmitForm">
+    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<ReservationValitador>()) OnTransformModel=OnTransformModel />
+    <RadzenColumn Size="12" Style="width:%60" SizeMD="6">
+        <RadzenStack>
+            <RadzenFieldset Text="Rezervasyon Ekleme Sayfası">
+                <RadzenStack Gap="1rem">
+
+
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Araba İsmi" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenTextBox Style="width: 50%;" @bind-Value="reservation.CarName" Name="CarName" />
+                            <ValidationMessage For="@(() => reservation.CarName)" />
+                        </RadzenColumn>
+
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Araba Modeli" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenTextBox Style="width: 50%;" @bind-Value="reservation.CarModel" Name="CarModel" />
+                            <ValidationMessage For="@(() => reservation.CarModel)" />
+                        </RadzenColumn>
+
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Kiralık Fiyatı" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenNumeric Style="width: 50%;" @bind-Value="reservation.RentPrice" Name="RentPrice" />
+                            <ValidationMessage For="@(() => reservation.RentPrice)" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                     <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Ek Ürün Fiyat" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenNumeric Style="width: 50%;" @bind-Value="reservation.AdditionalProductPrice " Name="AdditionalProductPrice " />
+                            <ValidationMessage For="@(() => reservation.AdditionalProductPrice )" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                     <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Toplam Fiyat" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenNumeric Style="width: 50%;" @bind-Value="reservation.TotalPrice" Name="TotalPrice" />
+                            <ValidationMessage For="@(() => reservation.TotalPrice)" />
+                        </RadzenColumn>
+                    </RadzenRow>
+
+
+                    @*                     <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="4">
+                    <RadzenLabel Text="Expiry Date" />
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="8">
+                    <RadzenDatePicker Style="width: 100%;" Name="ExpiryDate" @bind-Value="order.ExpiryDate" />
+                    </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="4">
+                    <RadzenLabel Text="Cardholder" />
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="8">
+                    <RadzenTextBox Style="width: 100%;" Name="CardHolder" />
+                    </RadzenColumn>
+                    </RadzenRow> *@
+                </RadzenStack>
+            </RadzenFieldset>
+        </RadzenStack>
+    </RadzenColumn>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Kaydet" />
+        <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Large" Icon="cancel" Text="Geri Dön" Click="@goBackGroupList" />
+    </RadzenStack>
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public Guid ReservationId { get; set; }
+    [Inject]
+    public HttpClient HttpClient { get; set; }
+
+    [Inject]
+    public ModalManager ModalManager { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    [Inject]
+    ILocalStorageService localStorageService { get; set; }
+
+    private ReservationDTO reservation = new ReservationDTO();
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        if (ReservationId != null && ReservationId != Guid.Empty)
+        {
+            string token = await localStorageService.GetItemAsStringAsync("token");
+            reservation = await HttpClient.GetServiceResponseAsync<ReservationDTO>("api/Reservation/ReservationById/" + ReservationId, token, true);
+        }
+
+
+    }
+    async Task editOrUpdate(ReservationDTO reservationDTO)
+    {
+
+        try
+        {
+
+            String url = "api/Reservation/create";
+            reservation = reservationDTO;
+            // Update
+            if (ReservationId != null && ReservationId != Guid.Empty)
+            {
+                url = "api/Reservation/update";
+                reservation.UpdatedDate = DateTime.UtcNow;
+                reservation.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
+            }
+            else
+            {
+                reservation.CreateDate = DateTime.UtcNow;
+                reservation.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
+            }
+            string token = await localStorageService.GetItemAsStringAsync("token");
+
+            reservation = await HttpClient.PostGetServiceResponseAsync<ReservationDTO, ReservationDTO>(url, reservation, token, true);
+
+            NavigationManager.NavigateTo("/admin/reservations");
+        }
+        catch (ApiException ex)
+        {
+            await ModalManager.ShowMessageAsync("Api Exception", ex.Message);
+        }
+        catch (Exception ex)
+        {
+            await ModalManager.ShowMessageAsync("Exception", ex.Message);
+        }
+
+
+
+
+    }
+    async Task SubmitForm(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            await editOrUpdate((ReservationDTO)editContext.Model);
+        }
+    }
+    void goBackGroupList()
+    {
+        NavigationManager.NavigateTo("/admin/reservations");
+    }
+    private object OnTransformModel(object model)
+    {
+        // Confirm that the model is of the expected type
+        // Do transformations here
+        // return the transformed model
+        return model;
+    }
+}

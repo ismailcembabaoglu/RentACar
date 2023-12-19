@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentACar.Persistence.Context;
@@ -11,9 +12,11 @@ using RentACar.Persistence.Context;
 namespace RentACar.Persistence.Migrations
 {
     [DbContext(typeof(RentACarPsqlDbContext))]
-    partial class RentACarPsqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231218235820_mig_edit_reservation")]
+    partial class mig_edit_reservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -19,6 +19,7 @@ builder.Services.AddScoped<ModalManager>();
 
 builder.Services.AddBlazoredModal();
 builder.Services.AddFormValidation(config => config.AddFluentValidation(typeof(CarDTO).Assembly));
+builder.Services.AddFormValidation(config => config.AddFluentValidation(typeof(ReservationDTO).Assembly));
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();

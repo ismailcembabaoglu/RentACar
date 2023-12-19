@@ -1,27 +1,22 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.DTOs;
 using RentACar.Application.IServices;
 using RentACar.Application.ResponseModels;
-using RentACar.Persistence.Services;
 
 namespace RentACar.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class ReservationController : ControllerBase
+    public class ReserveController : ControllerBase
     {
         private readonly IReservationService reservationService;
-
-        public ReservationController(IReservationService _reservationService)
+        public ReserveController(IReservationService _reservationService)
         {
             reservationService = _reservationService;
         }
-
-        [HttpGet("Locations")]
-        public async Task<ServiceResponse<List<ReservationDTO>>> GeReservations()
+        [HttpGet("Reservations")]
+        public async Task<ServiceResponse<List<ReservationDTO>>> GetReservations()
         {
             return new ServiceResponse<List<ReservationDTO>>()
             {
@@ -53,7 +48,7 @@ namespace RentACar.Server.Controllers
                 Value = await reservationService.DeleteReservation(Id)
             };
         }
-        [HttpGet("CarById/{Id}")]
+        [HttpGet("ReservationById/{Id}")]
         public async Task<ServiceResponse<ReservationDTO>> GetReservationById(Guid Id)
         {
             return new ServiceResponse<ReservationDTO>()

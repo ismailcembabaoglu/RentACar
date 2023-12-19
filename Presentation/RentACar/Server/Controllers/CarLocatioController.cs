@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.DTOs;
-using RentACar.Application.IServices;
 using RentACar.Application.ResponseModels;
-using RentACar.Persistence.Services;
 using RentACarLocation.Application.IServices;
 
 namespace RentACar.Server.Controllers
@@ -13,15 +10,13 @@ namespace RentACar.Server.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class CarLocationController : ControllerBase
+    public class CarLocatioController : ControllerBase
     {
         private readonly ICarLocationService carLocationService;
-
-        public CarLocationController(ICarLocationService _carLocationService)
+        public CarLocatioController(ICarLocationService _carLocationService)
         {
             carLocationService = _carLocationService;
         }
-
         [HttpGet("CarLocations")]
         public async Task<ServiceResponse<List<CarLocationDTO>>> GetCarLocations()
         {
@@ -55,7 +50,7 @@ namespace RentACar.Server.Controllers
                 Value = await carLocationService.DeleteCarLocationId(Id)
             };
         }
-        [HttpGet("CarById/{Id}")]
+        [HttpGet("CarLocationById/{Id}")]
         public async Task<ServiceResponse<CarLocationDTO>> GetCarLocationById(Guid Id)
         {
             return new ServiceResponse<CarLocationDTO>()

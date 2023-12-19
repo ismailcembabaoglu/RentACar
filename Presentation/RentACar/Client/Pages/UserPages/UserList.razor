@@ -1,4 +1,4 @@
-﻿@page "/admin/Locations"
+﻿@page "/admin/Users"
 @using Blazored.LocalStorage
 @using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
@@ -6,8 +6,7 @@
 @using RentACar.Domain.Models
 @layout MainAdminLayout
 
-<RadzenButton Shade="Shade.Dark" Click=goCreateLocationPage Icon="add" Variant="Variant.Flat" Text="Lokasyon Ekle" ButtonStyle="ButtonStyle.Success" />
-
+<RadzenButton Shade="Shade.Dark" Click=goCreateUserPage Icon="add" Variant="Variant.Flat" Text="Kullanıcı Ekle" ButtonStyle="ButtonStyle.Success" />
 
 <RadzenDataGrid AllowFiltering="true"
                 FilterMode="FilterMode.Simple"
@@ -16,25 +15,29 @@
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 AllowColumnPicking="true"
                 AllowPaging="true" PageSize="10"
-                AllowSorting="true" Data="@Locations"
-                TItem="LocationDTO">
+                AllowSorting="true" Data="@Users"
+                TItem="UserDTO">
     <Columns>
-        <RadzenDataGridColumn TItem="LocationDTO" Context="Location" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
-            <Template Context="Location">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goUpdateLocationPage(Location.Id))">
+        <RadzenDataGridColumn TItem="UserDTO" Context="User" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="User">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goUpdateUserPage(User.Id))">
                 </RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteLocation(Location.Id))">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteUser(User.Id))">
                 </RadzenButton>
             </Template>
         </RadzenDataGridColumn>
 
-        
-        <RadzenDataGridColumn TItem="LocationDTO" Property="City" Title="Şehir" />
 
-        <RadzenDataGridColumn TItem="LocationDTO" Property="Decription" Title="Lokasyon adresi" />
+        <RadzenDataGridColumn TItem="UserDTO" Property="FirstName" Title="İsim" />
+
+        <RadzenDataGridColumn TItem="UserDTO" Property="LastName" Title="Soy İsim" />
+        <RadzenDataGridColumn TItem="UserDTO" Property="EMailAddress" Title="E-Mail Adres" />
+        <RadzenDataGridColumn TItem="UserDTO" Property="Password" Title="Şifre" />
+        <RadzenDataGridColumn TItem="UserDTO" Property="IsActive" Title="Aktif" />
 
     </Columns>
 </RadzenDataGrid>
+
 
 @code {
     [Inject]
@@ -48,7 +51,7 @@
     [Inject]
     ILocalStorageService localStorageService { get; set; }
 
-    protected IEnumerable<LocationDTO> Locations;
+    protected IEnumerable<UserDTO> Users;
 
 
     protected override async Task OnInitializedAsync()
@@ -61,7 +64,7 @@
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            Locations = await Client.GetServiceResponseAsync<List<LocationDTO>>("/api/Locatio/Locations", token);
+            Users = await Client.GetServiceResponseAsync<List<UserDTO>>("/api/User/Users", token);
         }
         catch (ApiException ex)
         {
@@ -73,26 +76,26 @@
             await ModalManager.ShowMessageAsync("Exception Exception", ex.Message);
         }
     }
-    protected void goCreateLocationPage()
+    protected void goCreateUserPage()
     {
-        NavigationManager.NavigateTo("/admin/Locations/add");
+        NavigationManager.NavigateTo("/admin/Users/add");
     }
-    protected void goUpdateLocationPage(Guid Id)
+    protected void goUpdateUserPage(Guid Id)
     {
-        NavigationManager.NavigateTo("/admin/Locations/edit/" + Id);
+        NavigationManager.NavigateTo("/admin/Users/edit/" + Id);
     }
-    protected async Task DeleteLocation(Guid Id)
+    protected async Task DeleteUser(Guid Id)
     {
-        bool confirmed = await ModalManager.ConfirmationAsync("Silme İşlemi", " Locasyonu silmek istediğinize eminmisiniz ?");
+        bool confirmed = await ModalManager.ConfirmationAsync("Silme İşlemi", " Kullanıcı silmek istediğinize eminmisiniz ?");
         if (!confirmed) return;
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/Locatio/delete", Id, token);
+            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/User/delete", Id, token);
             if (deleted)
             {
                 await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlandı", 4);
-                NavigationManager.NavigateTo("/admin/Locations", true);
+                NavigationManager.NavigateTo("/admin/Users", true);
             }
             else
             {

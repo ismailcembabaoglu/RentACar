@@ -91,11 +91,11 @@
     {
         string token = await localStorageService.GetItemAsStringAsync("token");
         cars = await HttpClient.GetServiceResponseAsync<List<CarDTO>>("api/car/cars/", token);
-        locations = await HttpClient.GetServiceResponseAsync<List<LocationDTO>>("api/location/locations", token);
+        locations = await HttpClient.GetServiceResponseAsync<List<LocationDTO>>("api/locatio/locations", token);
         if (CarLocationId != null && CarLocationId != Guid.Empty)
         {
 
-            carLocation = await HttpClient.GetServiceResponseAsync<CarLocationDTO>("api/CarLocation/CarLocationById/" + CarLocationId, token, true);
+            carLocation = await HttpClient.GetServiceResponseAsync<CarLocationDTO>("api/CarLocatio/CarLocationById/" + CarLocationId, token, true);
         }
 
 
@@ -106,12 +106,12 @@
         try
         {
 
-            String url = "api/CarLocation/create";
+            String url = "api/CarLocatio/create";
             carLocation = carLocationDTO;
             // Update
             if (CarLocationId != null && CarLocationId != Guid.Empty)
             {
-                url = "api/CarLocation/update";
+                url = "api/CarLocatio/update";
                 carLocation.UpdatedDate = DateTime.UtcNow;
                 carLocation.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }

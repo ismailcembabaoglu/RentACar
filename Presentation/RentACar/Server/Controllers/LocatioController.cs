@@ -4,23 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.DTOs;
 using RentACar.Application.IServices;
 using RentACar.Application.ResponseModels;
-using RentACar.Persistence.Services;
-using RentACarLocation.Application.IServices;
 
 namespace RentACar.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class LocationController : ControllerBase
+    public class LocatioController : ControllerBase
     {
         private readonly ILocationService locationService;
-
-        public LocationController(ILocationService _locationService)
+        public LocatioController(ILocationService _locationService)
         {
             locationService = _locationService;
         }
-
         [HttpGet("Locations")]
         public async Task<ServiceResponse<List<LocationDTO>>> GetLocations()
         {
@@ -62,7 +58,5 @@ namespace RentACar.Server.Controllers
                 Value = await locationService.GetLocationById(Id)
             };
         }
-
-
     }
 }

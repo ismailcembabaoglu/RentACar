@@ -45,9 +45,9 @@ namespace RentACar.Client.Utils
 
         public async static Task<T> GetServiceResponseAsync<T>(this HttpClient Client, String Url, string token, bool ThrowSuccessException = false)
         {
+            
             Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
             var httpRes = await Client.GetFromJsonAsync<ServiceResponse<T>>(Url);
-
             return !httpRes.Success && ThrowSuccessException ? throw new ApiException(httpRes.Message) : httpRes.Value;
         }
     }

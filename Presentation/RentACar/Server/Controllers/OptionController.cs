@@ -54,7 +54,7 @@ namespace RentACar.Server.Controllers
                 Value = await optionService.DeleteOptionId(Id)
             };
         }
-        [HttpGet("CarById/{Id}")]
+        [HttpGet("OptionBy/{Id}")]
         public async Task<ServiceResponse<OptionDTO>> GetOptionById(Guid Id)
         {
             return new ServiceResponse<OptionDTO>()
