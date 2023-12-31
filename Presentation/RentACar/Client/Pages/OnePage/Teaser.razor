@@ -1,0 +1,188 @@
+﻿@using RentACar.Application.DTOs
+@using RentACar.Client.Utils
+<section id="teaser">
+    <div >
+
+
+        <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center" Class="shadows rz-p-12">
+            <div class="rz-shadow-12 rz-p-12 rz-text-align-left" style="background-color:white;font-size:large;width:1500px">
+
+                <form action="#" method="post" name="car-select-form" id="car-select-form">
+                    <RadzenRow>
+                        <RadzenColumn Size="12" SizeSM="3" >
+                            <RadzenStack>
+
+                                <RadzenFormField Text="Alış Lokasyonu" Variant="@variant">
+
+
+                                    <RadzenDropDown class="form-control autocomplete-location"  AllowClear="true" @bind-Value=deger AllowVirtualization="true" Name="Location"
+                                                    AllowFiltering="true" Data=@customers TextProperty="Decription" ValueProperty="Id" Placeholder="Alış Lokasyonu Ara" />
+                                        
+
+
+                                    </RadzenFormField>
+                              
+                                    <RadzenFormField Text="Bırakılacak Lokasyon" Variant="@variant">
+
+
+                                    <RadzenDropDown class="form-control autocomplete-location"  AllowClear="true" @bind-Value=deger2 AllowVirtualization="true" Name="Location"
+                                                    AllowFiltering="true" Data=@customers Placeholder="Bırakılacak Lokasyon Ara" TextProperty="Decription" ValueProperty="Id" />
+
+                                 
+
+
+                                    </RadzenFormField>
+                               
+                            </RadzenStack>
+                       
+                        
+                 
+
+                        </RadzenColumn>
+                  
+                        <RadzenColumn Size="12" SizeSM="3">
+                            <RadzenStack>
+                                <RadzenFormField Text="Alış Tarih & Saat" Variant="@variant">
+
+
+                                    <RadzenDatePicker  class="form-control datepicker" @bind-Value=@value ShowTime="true" HourFormat="24" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
+                             
+
+
+                                </RadzenFormField>
+                            </RadzenStack>
+
+
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeSM="3">
+                            <RadzenStack>
+                                <RadzenFormField Text="Bırakış Tarih & Saat" Variant="@variant">
+
+
+                                    <RadzenDatePicker  class="form-control datepicker" @bind-Value=@value ShowTime="true" HourFormat="24" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
+                                  
+
+
+                                </RadzenFormField>
+                            </RadzenStack>
+                            
+
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeSM="3">
+                            <RadzenStack>
+
+
+
+                                <RadzenButton type="submit" Style="margin:0px" class="submit"  Text="Araç Listele" />
+
+
+                          
+                            </RadzenStack>
+
+
+                        </RadzenColumn>
+
+                    </RadzenRow>
+@*                     <div class="col-md-3 col-xs-3">
+                        <div class="location">
+                            <div class="row">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>  Pick-up</span>
+
+                            </div>
+                            <div class="row">
+                                <div class="rz-p-12 rz-text-align-center">
+                                    <RentACar.Client.CustomComponents.LocationDropDown @bind-Value="asd" @bind-Value:event="ValueChanged" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-3">
+                        <div class="location">
+                            <div class="row">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>  Pick-up</span>
+
+                            </div>
+                            <div class="row">
+                                <div class="rz-p-12 rz-text-align-center">
+                                    <RentACar.Client.CustomComponents.LocationDropDown @bind-Value="dropOff" @bind-Value:event="ValueChanged" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-3">
+                        <div class="datetime pick-up">
+                            <div class="date pull-left">
+                                <div class="input-group">
+                                    <div class="row">
+                                        <span class="input-group-addon pixelfix"><span class="glyphicon glyphicon-calendar"></span> Pick-up</span>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="rz-p-12 rz-text-align-center">
+                                            <RadzenDatePicker @bind-Value=@value ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy h:mm tt" Name="DatePickerHourFormat" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-3">
+                        <div class="datetime pick-up">
+                            <div class="date pull-left">
+                                <div class="input-group">
+                                    <div class="row">
+                                        <span class="input-group-addon pixelfix"><span class="glyphicon glyphicon-calendar"></span> Pick-up</span>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="rz-p-12 rz-text-align-center">
+                                            <RadzenDatePicker @bind-Value=@value ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy h:mm tt" Name="DatePickerHourFormat" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+ *@
+           @*          <input type="submit" class="submit" name="submit" value="continue car reservation" id="checkoutModalLabel"> *@
+                </form>
+
+            </div>
+            </RadzenStack>
+     
+
+    </div>
+</section>
+<style>
+    .shadows div {
+      
+        text-align: center;
+    }
+</style>
+<div class="arrow-down"></div>
+@code {
+
+    [Inject]
+    HttpClient Client { get; set; }
+    Variant variant = Variant.Outlined;
+    List<LocationDTO> customers = new List<LocationDTO>();
+
+    Guid deger;
+    Guid deger2;
+    Guid asd;
+    Guid dropOff;
+    DateTime? value = DateTime.Now;
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await Client.GetServiceResponseNullTokenAsync<List<LocationDTO>>("api/Locatio/Locations");
+        await base.OnInitializedAsync();
+
+
+    }
+
+
+}

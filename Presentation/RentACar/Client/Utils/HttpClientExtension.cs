@@ -50,5 +50,11 @@ namespace RentACar.Client.Utils
             var httpRes = await Client.GetFromJsonAsync<ServiceResponse<T>>(Url);
             return !httpRes.Success && ThrowSuccessException ? throw new ApiException(httpRes.Message) : httpRes.Value;
         }
+        public async static Task<T> GetServiceResponseNullTokenAsync<T>(this HttpClient Client, String Url, bool ThrowSuccessException = false)
+        {
+
+            var httpRes = await Client.GetFromJsonAsync<ServiceResponse<T>>(Url);
+            return !httpRes.Success && ThrowSuccessException ? throw new ApiException(httpRes.Message) : httpRes.Value;
+        }
     }
 }

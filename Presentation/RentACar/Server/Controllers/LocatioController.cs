@@ -18,6 +18,7 @@ namespace RentACar.Server.Controllers
             locationService = _locationService;
         }
         [HttpGet("Locations")]
+        [AllowAnonymous]
         public async Task<ServiceResponse<List<LocationDTO>>> GetLocations()
         {
             return new ServiceResponse<List<LocationDTO>>()
