@@ -19,6 +19,7 @@ namespace RentACar.Server.Controllers
             carService = _carService;
         }
         [HttpGet("Cars")]
+        [AllowAnonymous]
         public async Task<ServiceResponse<List<CarDTO>>> GetCars()
         {
             return new ServiceResponse<List<CarDTO>>()
