@@ -6,6 +6,11 @@ body {
     font-family: 'Lato', sans-serif;
     color: #716d6e;
 }
+
+section {
+ scroll-margin:120px; /* Header'in altýndan baþlamasý için gerekli boþluk */
+ scroll-padding:120px;
+}
 /* Animation Delay
 --------------------------------------------*/
 .delay05s {
@@ -124,6 +129,7 @@ a {
     width: 44px;
     height: 44px;
     position: fixed;
+    z-index:1200;
     bottom: 44px;
     right: 64px;
     display: none;
@@ -133,11 +139,13 @@ a {
 /* Header
 --------------------------------------------*/
 header {
-    height: 147px;
+    height: 133px;
     width: 100%;
     top: 0;
-    z-index: 100;
+    z-index: 1500;
+    position:fixed ;
     background-color: #fff;
+    
 }
 
     header .box {
@@ -145,11 +153,11 @@ header {
     }
 
     header .brand {
-        margin: 45px 0 0 0;
+        margin-top: 12px;
     }
 
         header .brand h1 {
-            margin: 0;
+            margin-top: 0px;
             padding: 0;
         }
 
@@ -271,12 +279,12 @@ header.small {
     }
 
     header.small .brand {
-        margin: 24px 0 0 0;
+        margin-top: 12px;
         width: 50%;
     }
 
 header.large {
-    height: 147px;
+    height: 133px;
     box-shadow: none;
 }
 
@@ -285,7 +293,7 @@ header.large {
     }
 
     header.large .brand {
-        margin: 45px 0 0 0;
+        margin-top: 12px;
         width: 100%;
     }
 /* Teaser
@@ -1742,7 +1750,7 @@ header.large {
     #contact form .submit-message {
         font-size: 24px;
         font-weight: 900;
-        background-color: #ffbf00;
+        background-color: #f86207;
         color: #fff;
         border: none;
         line-height: 47px;
@@ -1847,7 +1855,7 @@ footer {
             footer .footer-nav li a {
                 font-size: 18px;
                 text-decoration: underline;
-                color: #716d6e;
+                color: #ffff;
                 font-weight: bold;
             }
 /* Checkout Modal
@@ -2160,7 +2168,7 @@ footer {
     }
 
         header.small .brand {
-            margin: 28px 0 0 0;
+            margin-top: 12px;
         }
     /* Teaser
 	--------------------------------------------*/
@@ -2448,7 +2456,7 @@ footer {
         position: absolute;
         width: 100%;
         margin: 15px 0 0 0;
-        border: 14px solid #ffbf00;
+        border: 14px solid #fff;
         border-top: none;
         box-shadow: 0px 4px 1px -1px rgba(50, 50, 50, 0.32);
     }

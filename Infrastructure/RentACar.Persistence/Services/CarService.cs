@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RentACar.Application.DTOs;
+using RentACar.Application.DTOs.OtherDTOs;
 using RentACar.Application.IServices;
 using RentACar.Domain.Models;
 using RentACar.Persistence.Context;
@@ -56,6 +57,33 @@ namespace RentACar.Persistence.Services
             if (dbCar == null)
                 throw new Exception("Araba Bulunamadı.");
             return dbCar;
+        }
+
+        public async Task<List<CarDTO>> GetCarReservations(CarReservationDTO carReservation)
+        {
+            List<CarDTO> carDTOs= new List<CarDTO>();
+
+          var cars= await context.Cars.ProjectTo<CarDTO>(mapper.ConfigurationProvider).ToListAsync();
+            foreach (var car in cars)
+            {
+                var reservation = await context.Reservations.Where(c => c.CarId == car.Id).FirstOrDefaultAsync();
+                if (reservation is not null )
+                {
+                    if ( reservation.StartDate < carReservation.StartDate
+                    && reservation.StartDate < carReservation.EndDate
+                    && reservation.EndDate < carReservation.StartDate
+                    && reservation.EndDate < carReservation.EndDate)
+                    {
+                        carDTOs.Add(car);
+                    }
+                }
+                else
+                {
+                    carDTOs.Add(car);
+                }
+            }
+            return carDTOs;
+            
         }
 
         public async Task<List<CarDTO>> GetCars()

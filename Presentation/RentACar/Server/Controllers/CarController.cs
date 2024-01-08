@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.DTOs;
+using RentACar.Application.DTOs.OtherDTOs;
 using RentACar.Application.IServices;
 using RentACar.Application.ResponseModels;
 
@@ -26,6 +27,16 @@ namespace RentACar.Server.Controllers
             {
 
                 Value = await carService.GetCars()
+            };
+        }
+        [HttpGet("CarRezervations")]
+        [AllowAnonymous]
+        public async Task<ServiceResponse<List<CarDTO>>> GetCarRezervations([FromQuery] CarReservationDTO carReservation)
+        {
+            return new ServiceResponse<List<CarDTO>>()
+            {
+
+                Value = await carService.GetCarReservations(carReservation)
             };
         }
         [HttpPost("Create")]

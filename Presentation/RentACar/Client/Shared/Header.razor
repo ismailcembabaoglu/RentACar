@@ -1,11 +1,15 @@
-﻿<header data-spy="affix" data-offset-top="39" data-offset-bottom="0" class="large">
+﻿<header data-spy="affix" data-offset-top="39" data-offset-bottom="0"  class="large">
 
-    <div class="row box">
+    <div class="row box" >
         <div class="col-md-5">
             <!-- Logo start -->
             <div class="col-3">
                 <div class="brand">
-                    <h1><a class="scroll-to" href="#top"><img class="img-responsive" src="/website/beyaz-logo.png" alt="Car|Rental"></a> </h1>
+                    <h1>
+                        <a class="scroll-to" href="#top">
+                            <img class="img-responsive" style="height:stretch"  src="/website/beyaz-logo.png" alt="Car|Rental">
+                        </a>
+                    </h1>
                 </div>
             </div>
         
@@ -50,19 +54,21 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <!-- Nav-Links start -->
                         <ul class="nav navbar-nav navbar-left">
-                            <li><button type="button" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})"style="margin-right:0.5rem" class="btn" data-bs-toggle="button">Home</button></li>
-                            <li><button type="button" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})" style="margin-right:0.5rem" class="btn" data-bs-toggle="button">Services</button></li>
-                            <li><a href="#vehicles" class="scroll-to">Vehicle Models</a></li>
-                            <li class="dropdown">
+                            <li><button type="button" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})"style="margin-right:0.5rem" class="btn" data-bs-toggle="button">Anasayfa</button></li>
+                            <li><button type="button" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})" style="margin-right:0.5rem" class="btn" data-bs-toggle="button">Hizmetlerimiz</button></li>
+                            <li><button type="button" onclick="document.getElementById('vehicles').scrollIntoView({behavior:'smooth'})" style="margin-right:0.5rem" class="btn" data-bs-toggle="button">Araçlarimız</button></li>
+                   @*          <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="blog-posts.html">Blog Posts</a></li>
                                     <li><a href="blog-single-post.html">Blog Single Post</a></li>
                                     <li><a href="error404.html">Error 404</a></li>
                                 </ul>
-                            </li>
-                            <li><a href="#locations" class="scroll-to">Locations</a></li>
-                            <li><a href="#contact" class="scroll-to">Contact</a></li>
+                            </li> *@
+                            <li><button type="button" onclick="document.getElementById('information').scrollIntoView({behavior:'smooth'})" style="margin-right:0.5rem" class="btn" data-bs-toggle="button">Hakkımızda</button></li>
+                            <li><button type="button" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" style="margin-right:0.5rem" class="btn" data-bs-toggle="button">İletişim</button></li>
+                          @*   <li><a href="#locations" class="scroll-to">Locations</a></li>
+                            <li><a href="#contact" class="scroll-to">Contact</a></li> *@
                         </ul>
                         <!-- Nav-Links end -->
                     </div>

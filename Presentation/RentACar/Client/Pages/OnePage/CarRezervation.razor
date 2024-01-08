@@ -1,0 +1,51 @@
+﻿
+@using RentACar.Application.CustomExceptions
+@using RentACar.Application.DTOs
+@using RentACar.Application.DTOs.OtherDTOs
+@using RentACar.Client.Utils
+@inject DialogService dialogService
+@layout EmptyLayout
+
+<p>@startdate</p>
+<RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem">
+    <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px" />
+    <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px" />
+</RadzenStack>
+
+@code {
+    [Parameter]
+    public DateTime startdate { get; set; }
+    [Parameter]
+    public DateTime enddate { get; set; }
+    [Parameter]
+    public Guid startlocation { get; set; }
+    [Parameter]
+    public Guid endlocation { get; set; }
+    [Inject]
+    public HttpClient Client { get; set; }
+    public CarReservationDTO? carRezervation;
+    List<CarDTO> cars = new List<CarDTO>();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            carRezervation = new CarReservationDTO();
+            carRezervation.StartDate = startdate;
+            carRezervation.EndDate = enddate;
+            carRezervation.LocationStartId = startlocation;
+            carRezervation.LocationEndId = endlocation;
+            cars = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>("api/car/CarRezervations?carReservation=" + carRezervation);
+        }
+        catch (ApiException ex)
+        {
+            
+        }
+        catch (Exception ex)
+        {
+            
+           
+        }
+        
+    }
+ 
+}
