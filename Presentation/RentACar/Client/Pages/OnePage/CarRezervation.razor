@@ -5,8 +5,22 @@
 @using RentACar.Client.Utils
 @inject DialogService dialogService
 @layout EmptyLayout
+@foreach (var car in cars)
+{
+        <RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 700px">
+            <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(car.CarNameModel)</b></RadzenText>
+                <RadzenImage Path="@car?.Photo" Style="width: 100px; height: 100px;" />
 
-<p>@startdate</p>
+            </RadzenStack>
+
+        </RadzenCard>
+    
+  
+}
+
+
+
 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem">
     <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px" />
     <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px" />
