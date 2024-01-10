@@ -1,5 +1,4 @@
-﻿
-@using RentACar.Application.CustomExceptions
+﻿@using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
 @using RentACar.Application.DTOs.OtherDTOs
 @using RentACar.Client.Utils
@@ -7,24 +6,84 @@
 @layout EmptyLayout
 @foreach (var car in cars)
 {
-        <RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 700px">
-            <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
-                <RadzenText TextStyle="TextStyle.Body1"><b>@(car.CarNameModel)</b></RadzenText>
-                <RadzenImage Path="@car?.Photo" Style="width: 100px; height: 100px;" />
+    <RadzenCard Class="rz-my-12 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px">
+        <RadzenRow>
+            <RadzenColumn>
+                <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center"  Class="rz-p-4">
+                    <RadzenText TextStyle="TextStyle.H5"><b>@(car.CarNameModel)</b></RadzenText>
+                    <RadzenImage Path="@car?.Photo" Style="width: 250px; height: 250px;" />
 
-            </RadzenStack>
+                </RadzenStack>
 
-        </RadzenCard>
-    
-  
+            </RadzenColumn>
+            <RadzenColumn>
+                <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="background-color:#f86207;">
+                    <RadzenRow RowGap="0">
+                        <RadzenColumn >
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-dark rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-arrows-v" style="color:white;margin-right:0.2rem" aria-hidden="true"></i> Vites Türü</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(car?.gear)</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-calendar" style="color:white;margin-right:0.2rem" aria-hidden="true"></i> Min Yaş</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(car?.CarYear)</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-picture-o" style="color:white;margin-right:0.2rem" aria-hidden="true"></i> Ehliyet</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(car?.DrivingLicense) Yıl</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-users" style="color:white;margin-right:0.2rem" aria-hidden="true"></i> Kişi Sayısı</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(car?.Person) Kişi</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-eraser" style="color:white;margin-right:0.2rem"></i>Kapı</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@car?.Door</b></RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn >
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-bolt" style="color:white;margin-right:0.2rem" aria-hidden="true"></i> Yakıt Türü</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(car?.FuelType)</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-money" style="color:white;margin-right:0.2rem" aria-hidden="true"></i>Teminat</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@car?.Depozit</b> ₺</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-tasks" style="color:white;margin-right:0.2rem" aria-hidden="true"></i> Toplam Km</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@car?.TotalKm</b> Km</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-suitcase" style="color:white;margin-right:0.2rem" aria-hidden="true"></i>Bagaj</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@car?.Luggage</b> Bagaj</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0"><i class="fa fa-snowflake-o" style="color:white;margin-right:0.2rem" aria-hidden="true"></i>Klima</RadzenText>
+
+                            @if (car.IsAc)
+                            {
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>Var</b></RadzenText>
+                            }
+                            else
+                            {
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>Yok</b></RadzenText>
+                            }
+                            
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenCard>
+
+            </RadzenColumn>
+             <RadzenColumn>
+                <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center"  Class="rz-p-4">
+                    <RadzenText TextStyle="TextStyle.Subtitle1"><b>Gün</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1"><b>@day Gün İçin</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Subtitle1"><b>Günlük Fiyat</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1"><b>@car.CarPrice</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Subtitle1"><b>Toplam Tutar</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1"><b>@(car.CarPrice*day)</b></RadzenText>
+                    <RadzenButton Variant="Variant.Flat" Style="background-color:#f86207" Text="Dahil Hizmetler"></RadzenButton>
+                    <RadzenButton Variant="Variant.Flat" Style="background-color:#f86207"  Text="Hemen Kirala"></RadzenButton>
+
+                </RadzenStack>
+             </RadzenColumn>
+        </RadzenRow>
+
+
+    </RadzenCard>
+
+
 }
 
 
 
-<RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem">
+@* <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem">
+    <p>@day</p>
     <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px" />
     <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px" />
-</RadzenStack>
+</RadzenStack> *@
 
 @code {
     [Parameter]
@@ -38,28 +97,33 @@
     [Inject]
     public HttpClient Client { get; set; }
     public CarReservationDTO? carRezervation;
+    TimeSpan dt;
+    int day;
     List<CarDTO> cars = new List<CarDTO>();
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            dt = Convert.ToDateTime(enddate) - Convert.ToDateTime(startdate);
+            day = Convert.ToInt32(dt.TotalDays);
             carRezervation = new CarReservationDTO();
             carRezervation.StartDate = startdate;
             carRezervation.EndDate = enddate;
             carRezervation.LocationStartId = startlocation;
+          
             carRezervation.LocationEndId = endlocation;
             cars = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>("api/car/CarRezervations?carReservation=" + carRezervation);
         }
         catch (ApiException ex)
         {
-            
+
         }
         catch (Exception ex)
         {
-            
-           
+
+
         }
-        
+
     }
- 
+
 }

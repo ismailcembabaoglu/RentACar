@@ -122,6 +122,15 @@
                     </RadzenRow>
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Fiyat" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenNumeric Style="width: 50%;" @bind-Value="carModel.CarPrice" Name="CarPrice" />
+                            <ValidationMessage For="@(() => carModel.CarPrice)" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
                             <RadzenLabel Text="Toplam Km" />
                         </RadzenColumn>
                         <RadzenColumn Size="12" SizeMD="8">

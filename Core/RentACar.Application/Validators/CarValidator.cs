@@ -22,6 +22,8 @@ namespace RentACar.Application.Validators
             RuleFor(c => c.FuelType).NotEmpty().WithMessage("Yakıt Tipi Alanı Boş Geçilemez!!");
             RuleFor(c => c.CarYear).NotEmpty().WithMessage("Araba Yıl Alanı Boş Geçilemez!!");
             RuleFor(c => c.Depozit).NotEmpty().WithMessage("Depozito Alanı Boş Geçilemez!!");
+            RuleFor(c => c.CarPrice).NotEmpty().WithMessage("Fiyat Alanı Boş Geçilemez!!");
+
             RuleFor(c => c.TotalKm).NotEmpty().WithMessage("Total Km Alanı Boş Geçilemez!!");
             
         }

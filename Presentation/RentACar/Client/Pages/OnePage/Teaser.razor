@@ -23,7 +23,7 @@ background-size:contain;
                     <Morris.Blazor.Validation.Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<CarRezervationValidator>()) OnTransformModel=OnTransformModel />
 
                     <RadzenRow Style="flex:none">
-                        <RadzenColumn Size="12" SizeSM="3">
+                        <RadzenColumn Size="12" SizeSM="4">
                             <RadzenStack>
 
                                 <RadzenFormField Text="Alış Lokasyonu" Variant="@variant">
@@ -72,7 +72,7 @@ background-size:contain;
 
                         </RadzenColumn>
 
-                        <RadzenColumn Size="12" SizeSM="3">
+                        <RadzenColumn Size="12" SizeSM="4">
                             <RadzenStack>
                                 <RadzenFormField Text="Alış Tarih & Saat" Variant="@variant">
 
@@ -92,7 +92,7 @@ background-size:contain;
 
 
                         </RadzenColumn>
-                        <RadzenColumn Size="12" SizeSM="3">
+                        <RadzenColumn Size="12" SizeSM="4">
                             <RadzenStack>
                                 <RadzenFormField Text="Bırakış Tarih & Saat" Variant="@variant">
 
@@ -102,6 +102,7 @@ background-size:contain;
 
 
                                 </RadzenFormField>
+                                <RadzenButton type="submit" Style="background-color:#f86207" Variant="Variant.Flat" Text="Araç Listele" />
                                 <RadzenRow>
                                     <RadzenColumn>
                                         <ValidationMessage For="@(() => carRezervations.EndDate)" />
@@ -112,20 +113,7 @@ background-size:contain;
 
 
                         </RadzenColumn>
-                        <RadzenColumn Size="12" SizeSM="3">
-                            <RadzenStack>
-
-
-
-                                <RadzenButton type="submit"  Style="margin:0px" class="submit" Text="Araç Listele" />
-
-
-
-                            </RadzenStack>
-
-
-                        </RadzenColumn>
-
+                     
                     </RadzenRow>
                     @*                     <div class="col-md-3 col-xs-3">
                     <div class="location">

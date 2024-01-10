@@ -21,6 +21,7 @@ namespace RentACar.Domain.Models
         public string CarYear { get; set; }
         public decimal Depozit { get; set; }
         public string DrivingLicense { get; set; }
+        public decimal? CarPrice { get; set; }
         public decimal TotalKm { get; set; }
         public bool IsAc { get; set; }
         public ICollection<CarOption>? CarOptions { get; set; }
