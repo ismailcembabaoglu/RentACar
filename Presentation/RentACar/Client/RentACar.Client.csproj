@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\OnePage\CarOptionRezervartion.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="Blazored.Modal" Version="7.1.0" />
     <PackageReference Include="Blazored.Typeahead" Version="4.7.0" />
@@ -26,6 +30,18 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\OnePage\CarOptionRezervartion.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\OnePage\CarOptionRezervartion.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\OnePage\CarOptionRezervartion.razor" />
   </ItemGroup>
 
 </Project>

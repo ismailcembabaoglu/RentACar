@@ -1,0 +1,86 @@
+﻿@using RentACar.Application.CustomExceptions
+@using RentACar.Application.DTOs
+@using RentACar.Client.Utils
+@inject DialogService dialogService
+<RadzenRow>
+    <RadzenColumn SizeMD="8">
+
+        <RadzenDataList Data="@carOptions" WrapItems="true" AllowPaging="true" TItem="CarOptionDTO">
+            <Template Context="carOption">
+                <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px;max-width: 400px">
+                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                            <RadzenText TextStyle="TextStyle.Overline"><b>@carOption.OptionName</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline"><b>Günlük</b></RadzenText>
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                            <RadzenNumeric Min="1" Max="10" @bind-Value=@carOption.OptionCount InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "enter value" }})" />
+                            <RadzenBadge BadgeStyle="BadgeStyle.Danger" Style="font-size:large" Text=@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", carOption.OptionPrice)}") />
+                        </RadzenStack>
+                        <RadzenCheckBox  
+                                        TValue="bool" Change=@(args =>test(args,carOption)) />
+                    </RadzenStack>
+                </RadzenCard>
+
+
+
+            </Template>
+        </RadzenDataList>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    [Parameter]
+    public Guid CarId { get; set; }
+    [Parameter]
+    public DateTime startdate { get; set; }
+    [Parameter]
+    public DateTime enddate { get; set; }
+    [Parameter]
+    public Guid startlocation { get; set; }
+    [Parameter]
+    public Guid endlocation { get; set; }
+    [Parameter]
+    public decimal carPrice { get; set; }
+    [Parameter]
+    public int day { get; set; }
+    [Inject]
+    public HttpClient Client { get; set; }
+    List<CarOptionDTO> carOptions;
+    List<CarOptionDTO> car;
+    decimal? optionPrice = 0;
+    [Inject]
+    ModalManager ModalManager { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            car = new List<CarOptionDTO>();
+            carOptions = new List<CarOptionDTO>();
+            carOptions = await Client.GetServiceResponseNullTokenAsync<List<CarOptionDTO>>("api/CarOption/CarOptionsNullToken/" + CarId);
+        }
+        catch (ApiException ex)
+        {
+            await ModalManager.ShowMessageAsync("Api Exception", ex.Message);
+        }
+        catch (Exception ex)
+        {
+            await ModalManager.ShowMessageAsync("Exception", ex.Message);
+        }
+
+    }
+    public void test(bool args,CarOptionDTO carOption)
+    {
+        if (args)
+        {
+            optionPrice += carOption.OptionPrice * carOption.OptionCount;
+            car.Add(carOption);
+        }
+        else
+        {
+            optionPrice -= carOption.OptionPrice * carOption.OptionCount;
+            car.Remove(carOption);
+        }
+    }
+
+}

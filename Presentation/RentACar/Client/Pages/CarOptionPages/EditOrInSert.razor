@@ -115,10 +115,12 @@
             {
                 url = "api/CarOption/update";
                 carOption.UpdatedDate = DateTime.UtcNow;
+               
                 carOption.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
+                carOption.OptionCount = 1;
                 carOption.CreateDate = DateTime.UtcNow;
                 carOption.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }

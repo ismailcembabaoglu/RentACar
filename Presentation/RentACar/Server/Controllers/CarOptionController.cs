@@ -27,6 +27,16 @@ namespace RentACar.Server.Controllers
                 Value = await carOptionService.GetCarOptions()
             };
         }
+        [HttpGet("CarOptionsNullToken/{CarId}")]
+        [AllowAnonymous]
+        public async Task<ServiceResponse<List<CarOptionDTO>>> GetCarOptionsNullToken(Guid CarId)
+        {
+            return new ServiceResponse<List<CarOptionDTO>>()
+            {
+
+                Value = await carOptionService.GetCarOptionsNullToken(CarId)
+            };
+        }
         [HttpPost("Create")]
         public async Task<ServiceResponse<CarOptionDTO>> CreateCarOption([FromBody] CarOptionDTO CarOption)
         {

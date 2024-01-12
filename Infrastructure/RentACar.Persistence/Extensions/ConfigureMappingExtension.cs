@@ -42,7 +42,8 @@ namespace RentACar.Persistence.Extensions
                 .ForMember(c => c.CarName, y => y.MapFrom(y => y.Car.CarName))
                 .ForMember(c => c.CarModel, y => y.MapFrom(y => y.Car.CarModel))
                 .ForMember(c => c.OptionName, y => y.MapFrom(y => y.Option.OpsiyonName))
-                .ForMember(c => c.OptionPrice, y => y.MapFrom(y => y.Option.OpsiyonPrice));
+                .ForMember(c => c.OptionPrice, y => y.MapFrom(y => y.Option.OpsiyonPrice))
+                .ForMember(c => c.OptionCount, y => y.MapFrom(y => y.OptionCount));
             CreateMap<CarOptionDTO, CarOption>();
 
             CreateMap<Location, LocationDTO>();

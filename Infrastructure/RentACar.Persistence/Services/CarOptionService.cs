@@ -67,6 +67,15 @@ namespace RentACar.Persistence.Services
             return dbCarOption;
         }
 
+        public async Task<List<CarOptionDTO>> GetCarOptionsNullToken(Guid CarId)
+        {
+            var db =await context.CarOptions
+                .Include(c => c.Car)
+                .Include(c => c.Option)
+                .Where(c=>c.CarId==CarId).ProjectTo<CarOptionDTO>(mapper.ConfigurationProvider).ToListAsync();
+            return db;
+        }
+
         public async Task<CarOptionDTO> UpdateCarOption(CarOptionDTO CarOption)
         {
             var dbCarOption = await context.CarOptions.Include(c => c.Car).Include(c => c.Option).Where(c => c.Id == CarOption.Id).FirstOrDefaultAsync();

@@ -10,7 +10,7 @@
   background-attachment: fixed;
 background-size:contain;
 ">
-    <div class="container" >
+    <div class="container">
         <h1 class="title">
             Araç Kirala
 
@@ -28,32 +28,41 @@ background-size:contain;
 
                                 <RadzenFormField Text="Alış Lokasyonu" Variant="@variant">
 
+                                    <Start>
+                                        <RadzenIcon Icon="language" />
+                                    </Start>
+                                    <ChildContent>
+                                        <RadzenDropDown class="form-control autocomplete-location" AllowClear="true" @bind-Value=carRezervations.LocationStartId AllowVirtualization="true" Name="Location"
+                                                        AllowFiltering="true" Data=@customers TextProperty="Decription" ValueProperty="Id" Placeholder="Alış Lokasyonu Ara" />
 
-                                    <RadzenDropDown class="form-control autocomplete-location" AllowClear="true" @bind-Value=carRezervations.LocationStartId AllowVirtualization="true" Name="Location"
-                                                    AllowFiltering="true" Data=@customers TextProperty="Decription" ValueProperty="Id" Placeholder="Alış Lokasyonu Ara" />
+                                    </ChildContent>
 
                                 </RadzenFormField>
                                 <RadzenRow>
                                     <RadzenColumn>
                                         <ValidationMessage For="@(() => carRezervations.LocationStartId)" />
                                     </RadzenColumn>
-                                 
+
                                 </RadzenRow>
-                               <RadzenRow >
+                                <RadzenRow>
                                     <RadzenColumn Style="flex:none;padding:0px;margin:0px;text-align:left">
                                         <RadzenCheckBox @bind-Value=isActive Name="CheckBox1" />
-                                   </RadzenColumn>
+                                    </RadzenColumn>
                                     <RadzenColumn Style="flex:none;margin:0px">
                                         <RadzenLabel Text="Bırakacağım Konum" Component="CheckBox1" Style=" font-size:x-small;text-align:left;color:white" />
 
-                                   </RadzenColumn>
-                               </RadzenRow>
-                                <RadzenFormField Visible="isActive"  Text="Bırakılacak Lokasyon" Variant="@variant">
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenFormField Visible="isActive" Text="Bırakılacak Lokasyon" Variant="@variant">
+                                    <Start>
+                                        <RadzenIcon Icon="language" />
+                                    </Start>
+                                    <ChildContent>
+                                        <RadzenDropDown class="form-control autocomplete-location" AllowClear="true" @bind-Value=carRezervations.LocationEndId AllowVirtualization="true" Name="Location"
+                                                        AllowFiltering="true" Data=@customers Placeholder="Bırakılacak Lokasyon Ara" TextProperty="Decription" ValueProperty="Id" />
 
 
-                                    <RadzenDropDown class="form-control autocomplete-location" AllowClear="true" @bind-Value=carRezervations.LocationEndId AllowVirtualization="true" Name="Location"
-                                                    AllowFiltering="true" Data=@customers Placeholder="Bırakılacak Lokasyon Ara" TextProperty="Decription" ValueProperty="Id" />
-
+                                    </ChildContent>
 
 
 
@@ -98,7 +107,7 @@ background-size:contain;
 
 
                                     <RadzenDatePicker class="form-control datepicker" @bind-Value=carRezervations.EndDate ShowTime="true" Min="DateTime.UtcNow.Date.AddDays(1)" HourFormat="24" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
-                                   
+
 
 
                                 </RadzenFormField>
@@ -113,7 +122,7 @@ background-size:contain;
 
 
                         </RadzenColumn>
-                     
+
                     </RadzenRow>
                     @*                     <div class="col-md-3 col-xs-3">
                     <div class="location">
@@ -213,11 +222,11 @@ background-size:contain;
     {
         carRezervations = carReservation;
         await DialogService.OpenAsync("Araç Rezervasyon Ekranı", ds =>
-        @<CarRezervation 
-        startlocation="carRezervations.LocationStartId" 
-        endlocation="carRezervations.LocationEndId" 
-        startdate="carRezervations.StartDate"
-                enddate="carRezervations.EndDate" />, new DialogOptions() { Width = "100%", Height = "90%", ShowClose = true, Resizable = false, AutoFocusFirstElement = true, Draggable = true, ShowTitle = true });
+        @<CarRezervation startlocation="carRezervations.LocationStartId"
+                endlocation="carRezervations.LocationEndId"
+                startdate="carRezervations.StartDate"
+                enddate="carRezervations.EndDate" />,
+        new DialogOptions() { CloseDialogOnEsc = true, Width = "100%", Height = "90%", ShowClose = true, Resizable = false, AutoFocusFirstElement = true, Draggable = true, ShowTitle = true });
     }
     private object OnTransformModel(object model)
     {

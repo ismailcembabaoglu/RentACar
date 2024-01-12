@@ -3,9 +3,9 @@
 @using RentACar.Domain.Enums
 <section id="vehicles" class="container">
     <h2 class="title wow fadeInDown" data-wow-offset="200">Araç Modelleri - <span class="subtitle">Bir bakýþta filomuz</span></h2>
-    <RadzenDataList WrapItems="true" AllowPaging="false" Data="@cars" TItem="CarDTO">
+    <RadzenDataList IsLoading="active" WrapItems="true" AllowPaging="false" Data="@cars" TItem="CarDTO">
         <Template Context="car">
-            <RadzenCard Class="rz-my-12 rz-mx-auto" Style="width: 450px">
+            <RadzenCard Class="rz-my-12 rz-mx-auto" Style="width: 500px">
                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
                     <RadzenImage   Path="@car?.Photo" Style="width: 150px; height: 150px; border-radius: 50%;" />
                     <RadzenStack Gap="0">
@@ -50,12 +50,14 @@
     string pagingSummaryFormat = "Gösterilecek Sayfa {0} ile {1} (Toplam {2} Kayýtlar)";
     int pageSize = 4;
     int count;
+    bool active=true;
     List<CarDTO> cars;
-   
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         cars = await Getcars(0, pageSize);
+        active = false;
         var carsst = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>("api/Car/Cars");
         count = carsst.Count();
 

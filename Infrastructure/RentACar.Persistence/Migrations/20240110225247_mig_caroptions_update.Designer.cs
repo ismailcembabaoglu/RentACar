@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentACar.Persistence.Context;
@@ -11,9 +12,11 @@ using RentACar.Persistence.Context;
 namespace RentACar.Persistence.Migrations
 {
     [DbContext(typeof(RentACarPsqlDbContext))]
-    partial class RentACarPsqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110225247_mig_caroptions_update")]
+    partial class mig_caroptions_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,9 +133,6 @@ namespace RentACar.Persistence.Migrations
 
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
-
-                    b.Property<int?>("OptionCount")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("OptionId")
                         .HasColumnType("uuid");
