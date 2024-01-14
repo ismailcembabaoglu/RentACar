@@ -15,6 +15,7 @@ namespace RentACar.Application.DTOs
         public string? CarModel { get; set; }
         public string? OptionName { get; set; }
         public decimal? OptionPrice { get; set; }
+        public bool IsOption { get; set; }
         public int? OptionCount { get; set; }
     }
 }

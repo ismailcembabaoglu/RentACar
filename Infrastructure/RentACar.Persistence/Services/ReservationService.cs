@@ -27,7 +27,10 @@ namespace RentACar.Persistence.Services
         }
         public async Task<ReservationDTO> CreateReservation(ReservationDTO Reservation)
         {
-            var dbReservation = await context.Reservations.Include(c => c.Car)
+            var dbReservation = await context.Reservations
+                .Include(c => c.Car)
+                .Include(c => c.StartLocation)
+                .Include(c => c.EndLocation)
                 .Where(c => c.Id == Reservation.Id).FirstOrDefaultAsync();
             if (dbReservation != null)
                 throw new Exception("Bu Rezervasyon Zaten Sistemde Kayıtlı");
@@ -52,7 +55,9 @@ namespace RentACar.Persistence.Services
 
         public async Task<ReservationDTO> GetReservationById(Guid Id)
         {
-            var dbReservation = await context.Reservations.Include(c => c.Car).Where(c => c.Id == Id)
+            var dbReservation = await context.Reservations.Include(c => c.Car)
+                .Include(c => c.StartLocation)
+                .Include(c => c.EndLocation).Where(c => c.Id == Id)
                 .ProjectTo<ReservationDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
             if (dbReservation == null)
                 throw new Exception("Rezervasyon Bulunamadı.");
@@ -61,13 +66,21 @@ namespace RentACar.Persistence.Services
 
         public async Task<List<ReservationDTO>> GetReservations()
         {
-            var dbReservation = await context.Reservations.Include(c => c.Car).ProjectTo<ReservationDTO>(mapper.ConfigurationProvider).ToListAsync();
+            var dbReservation = await context.Reservations
+                .Include(c => c.Car)
+                .Include(c => c.StartLocation)
+                .Include(c => c.EndLocation)
+                .ProjectTo<ReservationDTO>(mapper.ConfigurationProvider).ToListAsync();
             return dbReservation;
         }
 
         public async Task<ReservationDTO> UpdateReservation(ReservationDTO Reservation)
         {
-            var dbReservation = await context.Reservations.Include(c => c.Car).Where(c => c.Id == Reservation.Id).FirstOrDefaultAsync();
+            var dbReservation = await context.Reservations
+                .Include(c => c.Car)
+                .Include(c => c.StartLocation)
+                .Include(c => c.EndLocation)
+                .Where(c => c.Id == Reservation.Id).FirstOrDefaultAsync();
             if (dbReservation == null)
                 throw new Exception("Rezervasyon Bulunamadığından Dolayı Güncelleme İşlemi Başarısız");
             mapper.Map(Reservation, dbReservation);

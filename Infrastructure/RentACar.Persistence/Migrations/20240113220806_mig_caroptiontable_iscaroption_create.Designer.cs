@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentACar.Persistence.Context;
@@ -11,9 +12,11 @@ using RentACar.Persistence.Context;
 namespace RentACar.Persistence.Migrations
 {
     [DbContext(typeof(RentACarPsqlDbContext))]
-    partial class RentACarPsqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113220806_mig_caroptiontable_iscaroption_create")]
+    partial class mig_caroptiontable_iscaroption_create
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +134,7 @@ namespace RentACar.Persistence.Migrations
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsOption")
+                    b.Property<bool?>("IsOption")
                         .HasColumnType("boolean");
 
                     b.Property<int?>("OptionCount")
@@ -179,58 +182,22 @@ namespace RentACar.Persistence.Migrations
                     b.Property<decimal?>("AdditionalProductPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ArrivalFlightNo")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("EndLocationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("IdentityNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<decimal>("RentPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("ReturnFlightNumber")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("StartLocationId")
-                        .HasColumnType("uuid");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
                     b.HasIndex("CarId");
-
-                    b.HasIndex("EndLocationId");
-
-                    b.HasIndex("StartLocationId");
 
                     b.ToTable("Reservations");
                 });
@@ -341,23 +308,7 @@ namespace RentACar.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("RentACar.Domain.Models.Location", "EndLocation")
-                        .WithMany("EndLocations")
-                        .HasForeignKey("EndLocationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("RentACar.Domain.Models.Location", "StartLocation")
-                        .WithMany("StartLocations")
-                        .HasForeignKey("StartLocationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Car");
-
-                    b.Navigation("EndLocation");
-
-                    b.Navigation("StartLocation");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.ReservationOption", b =>
@@ -391,10 +342,6 @@ namespace RentACar.Persistence.Migrations
             modelBuilder.Entity("RentACar.Domain.Models.Location", b =>
                 {
                     b.Navigation("CarLocations");
-
-                    b.Navigation("EndLocations");
-
-                    b.Navigation("StartLocations");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Option", b =>

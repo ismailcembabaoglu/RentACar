@@ -1,32 +1,158 @@
-﻿@using RentACar.Application.CustomExceptions
+﻿@using Morris.Blazor.FluentValidation
+@using Morris.Blazor.Validation
+@using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
+@using RentACar.Application.Validators
 @using RentACar.Client.Utils
 @inject DialogService dialogService
 <RadzenRow>
     <RadzenColumn SizeMD="8">
+        <RadzenPanel AllowCollapse="true" Collapsed="true" class="rz-my-12 rz-mx-auto">
+            <HeaderTemplate>
+                <RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-display-flex rz-align-items-center rz-m-0">
+                    <RadzenIcon Icon="group_work" class="rz-mr-1" /><b>Ek ürün ve sigortalar</b>
+                </RadzenText>
 
-        <RadzenDataList Data="@carOptions" WrapItems="true" AllowPaging="true" TItem="CarOptionDTO">
-            <Template Context="carOption">
-                <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px;max-width: 400px">
-                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
-                        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
-                            <RadzenText TextStyle="TextStyle.Overline"><b>@carOption.OptionName</b></RadzenText>
-                            <RadzenText TextStyle="TextStyle.Overline"><b>Günlük</b></RadzenText>
+            </HeaderTemplate>
+            <ChildContent>
+                <RadzenDataList Data="@carOptions" WrapItems="true" AllowPaging="true" TItem="CarOptionDTO">
+                    <Template Context="carOption">
+                        <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px;max-width: 400px">
+                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                                <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                                    <RadzenText TextStyle="TextStyle.Overline"><b>@carOption.OptionName</b></RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Overline"><b>Günlük</b></RadzenText>
+                                </RadzenStack>
+                                <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                                    @if (carOption.IsOption)
+                                    {
+                                        <RadzenNumeric Disabled="true" Min="1" Max="10" @bind-Value=@carOption.OptionCount InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "enter value" }})" />
+                                    }
+                                    else
+                                    {
+                                        <RadzenNumeric Disabled="false" Min="1" Max="10" @bind-Value=@carOption.OptionCount InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "enter value" }})" />
+                                    }
+                                    <RadzenBadge BadgeStyle="BadgeStyle.Danger" Style="font-size:large" Text=@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", carOption.OptionPrice)}") />
+                                </RadzenStack>
+                                <RadzenCheckBox @bind-Value="carOption.IsOption" TValue="bool" Change=@(args =>test(carOption.IsOption,carOption)) />
+                            </RadzenStack>
+                        </RadzenCard>
+
+
+
+                    </Template>
+                </RadzenDataList>
+            </ChildContent>
+        </RadzenPanel>
+
+    </RadzenColumn>
+    <RadzenColumn SizeMD="4">
+        <RadzenPanel class="rz-my-12 rz-mx-auto">
+            <HeaderTemplate>
+                <RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-display-flex rz-align-items-center rz-m-0">
+                    <b>Fiyat Bilgileri</b>
+                </RadzenText>
+            </HeaderTemplate>
+            <ChildContent>
+                <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto">
+                    <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.End">
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenText TextStyle="TextStyle.Body1"><b>Kiralama Tutarı</b></RadzenText>
+                            <RadzenBadge BadgeStyle="BadgeStyle.Danger" Style="font-size:large" Text=@($"{day} Gün x {String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", carPrice)}") />
                         </RadzenStack>
-                        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
-                            <RadzenNumeric Min="1" Max="10" @bind-Value=@carOption.OptionCount InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "enter value" }})" />
-                            <RadzenBadge BadgeStyle="BadgeStyle.Danger" Style="font-size:large" Text=@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", carOption.OptionPrice)}") />
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenText TextStyle="TextStyle.Body1"><b>Ek ürün ve sigorta</b></RadzenText>
+                            <RadzenBadge BadgeStyle="BadgeStyle.Danger" Style="font-size:large" Text=@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", optionPrice)}") />
                         </RadzenStack>
-                        <RadzenCheckBox  
-                                        TValue="bool" Change=@(args =>test(args,carOption)) />
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenText TextStyle="TextStyle.Body1"><b>Toplam Tutar</b></RadzenText>
+                            <RadzenBadge BadgeStyle="BadgeStyle.Danger" Style="font-size:large" Text=@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", optionPrice+(carPrice*day))}") />
+                        </RadzenStack>
                     </RadzenStack>
                 </RadzenCard>
+            </ChildContent>
+        </RadzenPanel>
 
-
-
-            </Template>
-        </RadzenDataList>
     </RadzenColumn>
+</RadzenRow>
+<RadzenRow>
+    <RadzenColumn SizeMD="8">
+        <EditForm Model="@Reservation" OnValidSubmit="SubmitForm">
+            <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<ReservationOptionValidator>()) OnTransformModel=OnTransformModel />
+            <RadzenPanel  class="rz-my-12 rz-mx-auto">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-display-flex rz-align-items-center rz-m-0">
+                        <b>Sürücü Ve İletişim Bilgileri</b>
+                    </RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+
+                    <RadzenStack Orientation="Orientation.Vertical">
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Şirket Adı-İsim Soyisim" Style="max-width:400px">
+                                <RadzenTextBox @bind-Value="Reservation.CustomerName" Name="CustomerName" />
+                            </RadzenFormField>
+                            <RadzenFormField AllowFloatingLabel="false" Text="Kimlik No Veya Pasaport Numarası" Style="max-width:400px">
+                                <RadzenTextBox @bind-Value="Reservation.IdentityNo" Name="IdentityNo" />
+                            </RadzenFormField>
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <ValidationMessage For="@(() => Reservation.CustomerName)" />
+                            <ValidationMessage For="@(() => Reservation.IdentityNo)" />
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Geliş Uçuş No" Style="max-width:400px">
+                                <RadzenTextBox @bind-Value="Reservation.ArrivalFlightNo" Name="ArrivalFlightNo" />
+
+                            </RadzenFormField>
+                            <RadzenFormField AllowFloatingLabel="false" Text="Dönüş Uçuş No" Style="max-width:400px">
+                                <RadzenTextBox @bind-Value="Reservation.ReturnFlightNumber" Name="ReturnFlightNumber" />
+                            </RadzenFormField>
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <ValidationMessage For="@(() => Reservation.ArrivalFlightNo)" />
+
+                            <ValidationMessage For="@(() => Reservation.ReturnFlightNumber)" />
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Email Adresi" Style="max-width:400px">
+                                <RadzenTextBox @bind-Value="Reservation.Email" Name="Email" />
+
+                            </RadzenFormField>
+                            <RadzenFormField Text="Telefon Numarası" AllowFloatingLabel="false" Style="max-width:400px">
+                                <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" Placeholder="(555) 555-5555" Name="PhoneNumber" @bind-Value="Reservation.PhoneNumber" />
+                            </RadzenFormField>
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <ValidationMessage For="@(() => Reservation.Email)" />
+                            <ValidationMessage For="@(() => Reservation.PhoneNumber)" />
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Adres" Style="max-width:400px">
+                                <RadzenTextArea Placeholder="Adres Giriniz" @bind-Value="Reservation.Address" class="w-100" aria-label="TextArea with placeholder" />
+                            </RadzenFormField>
+                            <RadzenFormField AllowFloatingLabel="false" Text="Not" Style="max-width:400px">
+                                <RadzenTextArea Placeholder="Not giriniz" @bind-Value="Reservation.Decription" class="w-100" aria-label="TextArea with placeholder" />
+                            </RadzenFormField>
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal">
+
+                            <ValidationMessage For="@(() => Reservation.Address)" />
+                            <ValidationMessage For="@(() => Reservation.Decription)" />
+                        </RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center">
+
+                            <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Rezervasyon Yap" />
+
+                        </RadzenStack>
+                    </RadzenStack>
+
+                </ChildContent>
+
+            </RadzenPanel>
+        </EditForm>
+    </RadzenColumn>
+
 </RadzenRow>
 
 @code {
@@ -41,13 +167,15 @@
     [Parameter]
     public Guid endlocation { get; set; }
     [Parameter]
-    public decimal carPrice { get; set; }
+    public decimal? carPrice { get; set; }
     [Parameter]
     public int day { get; set; }
     [Inject]
     public HttpClient Client { get; set; }
     List<CarOptionDTO> carOptions;
     List<CarOptionDTO> car;
+    bool popup;
+    ReservationDTO Reservation = new ReservationDTO();
     decimal? optionPrice = 0;
     [Inject]
     ModalManager ModalManager { get; set; }
@@ -58,6 +186,12 @@
             car = new List<CarOptionDTO>();
             carOptions = new List<CarOptionDTO>();
             carOptions = await Client.GetServiceResponseNullTokenAsync<List<CarOptionDTO>>("api/CarOption/CarOptionsNullToken/" + CarId);
+            Reservation.CarId = CarId;
+            Reservation.StartDate = startdate;
+            Reservation.EndDate = enddate;
+            Reservation.StartLocationId = startlocation;
+            Reservation.EndLocationId = endlocation;
+            Reservation.RentPrice = carPrice.Value;
         }
         catch (ApiException ex)
         {
@@ -69,7 +203,39 @@
         }
 
     }
-    public void test(bool args,CarOptionDTO carOption)
+    async Task editOrUpdate(ReservationDTO reservationDTO)
+    {
+        try
+        {
+            reservationDTO.TotalPrice = (carPrice.Value * day) + optionPrice.Value;
+        }
+        catch (ApiException ex)
+        {
+            await ModalManager.ShowMessageAsync("Api Exception", ex.Message);
+        }
+        catch (Exception ex)
+        {
+
+            await ModalManager.ShowMessageAsync("Exception", ex.Message);
+        }
+
+    }
+    async Task SubmitForm(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            await editOrUpdate((ReservationDTO)editContext.Model);
+        }
+    }
+    private object OnTransformModel(object model)
+    {
+
+        // Confirm that the model is of the expected type
+        // Do transformations here
+        // return the transformed model
+        return model;
+    }
+    public void test(bool args, CarOptionDTO carOption)
     {
         if (args)
         {

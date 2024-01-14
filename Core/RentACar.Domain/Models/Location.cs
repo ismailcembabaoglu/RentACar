@@ -11,5 +11,8 @@ namespace RentACar.Domain.Models
     {
         public string City { get; set; }
         public ICollection<CarLocation>? CarLocations { get; set; }
+        public ICollection<Reservation>? StartLocations { get; set; }
+        public ICollection<Reservation>? EndLocations { get; set; }
+
     }
 }

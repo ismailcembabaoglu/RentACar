@@ -36,6 +36,8 @@ namespace RentACar.Persistence.Context
             modelBuilder.Entity<CarOption>().HasOne(c => c.Option).WithMany(c => c.CarOptions).HasForeignKey(c => c.OptionId).OnDelete(DeleteBehavior.NoAction);
             //Reservation ilişkileri
             modelBuilder.Entity<Reservation>().HasOne(c => c.Car).WithMany(c => c.Reservations).HasForeignKey(c => c.CarId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Reservation>().HasOne(c => c.EndLocation).WithMany(c => c.EndLocations).HasForeignKey(c => c.EndLocationId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Reservation>().HasOne(c => c.StartLocation).WithMany(c => c.StartLocations).HasForeignKey(c => c.StartLocationId).OnDelete(DeleteBehavior.NoAction);
             //ReservationOption İlişkileri
             modelBuilder.Entity<ReservationOption>().HasOne(c => c.Reservation).WithMany(c => c.ReservationOptions).HasForeignKey(c => c.ReservationId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<ReservationOption>().HasOne(c => c.Option).WithMany(c => c.ReservationOptions).HasForeignKey(c => c.OptionId).OnDelete(DeleteBehavior.NoAction);

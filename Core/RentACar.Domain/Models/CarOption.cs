@@ -13,6 +13,7 @@ namespace RentACar.Domain.Models
         public Car? Car { get; set; }
         public Guid OptionId { get; set; }
         public int? OptionCount { get; set; }
+        public bool IsOption { get; set; }
         public Option? Option { get; set; }
     }
 }

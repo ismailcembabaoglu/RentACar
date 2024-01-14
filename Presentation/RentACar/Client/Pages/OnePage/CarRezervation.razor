@@ -147,7 +147,7 @@
         var db = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>("api/car/CarRezervations?carReservation=" + carRezervation);
         return db.Skip(skip).Take(take).ToList();
     }
-    public async Task OptionsPage(Guid carId, int day,decimal carprice)
+    public async Task OptionsPage(Guid carId, int day,decimal? carprice)
     {
         
         await dialogService.OpenAsync("Araç Opsiyonları", ds =>

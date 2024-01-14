@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentACar.Persistence.Context;
@@ -11,9 +12,11 @@ using RentACar.Persistence.Context;
 namespace RentACar.Persistence.Migrations
 {
     [DbContext(typeof(RentACarPsqlDbContext))]
-    partial class RentACarPsqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240114030514_mig_rezervationtable_update")]
+    partial class mig_rezervationtable_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,10 +205,6 @@ namespace RentACar.Persistence.Migrations
 
                     b.Property<Guid>("EndLocationId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("IdentityNo")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
