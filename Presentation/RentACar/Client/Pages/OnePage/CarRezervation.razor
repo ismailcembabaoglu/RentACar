@@ -7,7 +7,8 @@
 
 <RadzenDataList IsLoading="active" WrapItems="true" AllowPaging="true" Data="@cars" TItem="CarDTO">
     <Template Context="car">
-        <RadzenCard Class="rz-my-12 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px">
+        <RadzenCard Class="rz-my-4 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px">
+            
             <RadzenRow>
                 <RadzenColumn>
                     <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Class="rz-p-4">
@@ -62,9 +63,9 @@
                         <RadzenText TextStyle="TextStyle.Subtitle1"><b>Gün</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Body1"><b>@day Gün İçin</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Subtitle1"><b>Günlük Fiyat</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@car.CarPrice</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", car.CarPrice)}")</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Subtitle1"><b>Toplam Tutar</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1"><b>@(car.CarPrice * day)</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1" ><b>@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", car.CarPrice * day)}")</b></RadzenText>
                         <RadzenButton Variant="Variant.Flat" Style="background-color:#f86207" Text="Dahil Hizmetler"></RadzenButton>
                         <RadzenButton Variant="Variant.Flat" Style="background-color:#f86207" Click="()=>OptionsPage(car.Id,day,car.CarPrice)" Text="Hemen Kirala"></RadzenButton>
 
