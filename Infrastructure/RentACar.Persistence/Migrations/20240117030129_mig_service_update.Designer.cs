@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentACar.Persistence.Context;
@@ -11,9 +12,11 @@ using RentACar.Persistence.Context;
 namespace RentACar.Persistence.Migrations
 {
     [DbContext(typeof(RentACarPsqlDbContext))]
-    partial class RentACarPsqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240117030129_mig_service_update")]
+    partial class mig_service_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,21 +173,6 @@ namespace RentACar.Persistence.Migrations
                         .HasColumnType("numeric");
 
                     b.ToTable("Options");
-                });
-
-            modelBuilder.Entity("RentACar.Domain.Models.Partner", b =>
-                {
-                    b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PartnerName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.ToTable("Partners");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Reservation", b =>

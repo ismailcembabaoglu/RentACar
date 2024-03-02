@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace RentACar.Domain.Models
 {
-    public class Service:BaseModel
+    public class Partner:BaseModel
     {
-        public string ServiceName { get; set; }
-        public string Icon { get; set; }
-        public string ServiceDescription { get; set; }
+        public string Image { get; set; }
+        public string PartnerName { get; set; }
     }
 }

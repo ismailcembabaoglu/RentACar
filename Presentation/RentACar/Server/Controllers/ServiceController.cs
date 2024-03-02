@@ -21,6 +21,7 @@ namespace RentACar.Server.Controllers
         }
 
         [HttpGet("Services")]
+        [AllowAnonymous]
         public async Task<ServiceResponse<List<ServiceDTO>>> GetServices()
         {
             return new ServiceResponse<List<ServiceDTO>>()

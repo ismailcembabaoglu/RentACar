@@ -55,7 +55,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
+        // await base.OnInitializedAsync();
         cars = await Getcars(0, pageSize);
         active = false;
         var carsst = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>("api/Car/Cars");

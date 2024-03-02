@@ -2661,3 +2661,19 @@ footer {
 #dialog{
     z-index:100000;
 }
+.nav-button {
+    text-decoration: none;
+    color: orange;
+    padding: 8px 15px;
+    margin-right: 10px;
+    font-size:medium;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+    .nav-button:hover {
+        color: darkorange;
+        background-color: #555;
+    }

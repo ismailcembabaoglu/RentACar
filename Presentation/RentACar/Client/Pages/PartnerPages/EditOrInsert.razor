@@ -1,6 +1,5 @@
-﻿@page "/admin/services/add"
-@page "/admin/services/edit/{ServiceId:guid}"
-@layout MainAdminLayout
+﻿@page "/admin/partners/add"
+@page "/admin/partners/edit/{PartnerId:guid}"
 @using Blazored.LocalStorage
 @using Morris.Blazor.FluentValidation
 @using Morris.Blazor.Validation
@@ -8,45 +7,30 @@
 @using RentACar.Application.DTOs
 @using RentACar.Application.Validators
 @using RentACar.Client.Utils
-@using RentACar.Domain.Enums
-@using RentACar.Domain.Enums.Helper
-
-
-<EditForm Model="@service" OnValidSubmit="SubmitForm">
-    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<ServiceValidator>()) OnTransformModel=OnTransformModel />
+@layout MainAdminLayout
+<EditForm Model="@partner" OnValidSubmit="SubmitForm">
+    <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<PartnerValidator>()) OnTransformModel=OnTransformModel />
     <RadzenColumn Size="12" Style="width:%60" SizeMD="6">
         <RadzenStack>
             <RadzenFieldset Text="Hizmet Ekleme Sayfası">
                 <RadzenStack Gap="1rem">
 
-
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenLabel Text="Fotoğraf" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="8">
+                            <RadzenFileInput @bind-Value=@partner.Image @bind-FileName=@fileName @bind-FileSize=@fileSize TValue="string" class="w-50" />
+                            <ValidationMessage For="@(() => partner.Image)" />
+                        </RadzenColumn>
+                    </RadzenRow>
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="12" SizeMD="4">
                             <RadzenLabel Text="Hizmet Adı" />
                         </RadzenColumn>
                         <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextBox Style="width: 50%;" @bind-Value="service.ServiceName" Name="ServiceName" />
-                            <ValidationMessage For="@(() => service.ServiceName)" />
-                        </RadzenColumn>
-
-                    </RadzenRow>
-                    <RadzenRow AlignItems="AlignItems.Center">
-                        <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Hizmet Icon" />
-                        </RadzenColumn>
-                        <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextBox Style="width: 50%;" @bind-Value="service.Icon" Name="Icon" />
-                            <ValidationMessage For="@(() => service.Icon)" />
-                        </RadzenColumn>
-
-                    </RadzenRow>
-                    <RadzenRow AlignItems="AlignItems.Center">
-                        <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Hizmet Açıklaması" />
-                        </RadzenColumn>
-                        <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenTextArea Style="width: 50%;" @bind-Value="service.ServiceDescription" Name="ServiceDescription" />
-                            <ValidationMessage For="@(() => service.ServiceDescription)" />
+                            <RadzenTextBox Style="width: 50%;" @bind-Value="partner.PartnerName" Name="PartnerName" />
+                            <ValidationMessage For="@(() => partner.PartnerName)" />
                         </RadzenColumn>
 
                     </RadzenRow>
@@ -60,10 +44,9 @@
     </RadzenStack>
 </EditForm>
 
-
 @code {
     [Parameter]
-    public Guid ServiceId { get; set; }
+    public Guid PartnerId { get; set; }
     [Inject]
     public HttpClient HttpClient { get; set; }
 
@@ -75,44 +58,45 @@
     [Inject]
     ILocalStorageService localStorageService { get; set; }
 
-    private ServiceDTO service = new ServiceDTO();
-
+    private PartnerDTO partner = new PartnerDTO();
+    string fileName;
+    long? fileSize;
     protected async override Task OnInitializedAsync()
     {
 
-        if (ServiceId != null && ServiceId != Guid.Empty)
+        if (PartnerId != null && PartnerId != Guid.Empty)
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            service = await HttpClient.GetServiceResponseAsync<ServiceDTO>("api/Service/ServiceById/" + ServiceId, token, true);
+            partner = await HttpClient.GetServiceResponseAsync<PartnerDTO>("api/Partner/PartnerById/" + PartnerId, token, true);
         }
 
 
     }
-    async Task editOrUpdate(ServiceDTO serviceDTO)
+    async Task editOrUpdate(PartnerDTO partnerDTO)
     {
 
         try
         {
 
-            String url = "api/Service/create";
-            service = serviceDTO;
+            String url = "api/Partner/Create";
+            partner = partnerDTO;
             // Update
-            if (ServiceId != null && ServiceId != Guid.Empty)
+            if (PartnerId != null && PartnerId != Guid.Empty)
             {
                 url = "api/Service/update";
-                service.UpdatedDate = DateTime.UtcNow;
-                service.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
+                partner.UpdatedDate = DateTime.UtcNow;
+                partner.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                service.CreateDate = DateTime.UtcNow;
-                service.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
+                partner.CreateDate = DateTime.UtcNow;
+                partner.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");
 
-            service = await HttpClient.PostGetServiceResponseAsync<ServiceDTO, ServiceDTO>(url, service, token, true);
+            partner = await HttpClient.PostGetServiceResponseAsync<PartnerDTO, PartnerDTO>(url, partner, token, true);
 
-            NavigationManager.NavigateTo("/admin/services");
+            NavigationManager.NavigateTo("/admin/partners");
         }
         catch (ApiException ex)
         {
@@ -131,12 +115,12 @@
     {
         if (editContext.Validate())
         {
-            await editOrUpdate((ServiceDTO)editContext.Model);
+            await editOrUpdate((PartnerDTO)editContext.Model);
         }
     }
     void goBackGroupList()
     {
-        NavigationManager.NavigateTo("/admin/services");
+        NavigationManager.NavigateTo("/admin/partners");
     }
     private object OnTransformModel(object model)
     {

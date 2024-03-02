@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace RentACar.Application.DTOs
 {
-    public class ServiceDTO:BaseModelDTO
+    public class PartnerDTO:BaseModelDTO
     {
-        public string ServiceName { get; set; }
-        public string Icon { get; set; }
-        public string ServiceDescription { get; set; }
+        public string Image { get; set; }
+        public string PartnerName { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace RentACar.Persistence.Context
         public virtual DbSet<ReservationOption> ReservationOptions { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Partner> Partners { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +55,7 @@ namespace RentACar.Persistence.Context
             modelBuilder.ApplyConfiguration(new ReservationOptionMap());
             modelBuilder.ApplyConfiguration(new ServiceMap());
             modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new PartnerMap());
             base.OnModelCreating(modelBuilder);
         }
     }

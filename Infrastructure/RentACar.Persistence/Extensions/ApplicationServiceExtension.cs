@@ -3,6 +3,7 @@ using RentACar.Application.IServices;
 using RentACar.Persistence.Services;
 using RentACar.Persistence.Users;
 using RentACarLocation.Application.IServices;
+using RentAPartner.Application.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace RentACar.Persistence.Extensions
             service.AddScoped<IReservationService, ReservationService>();
             service.AddScoped<IServiceService, ServiceService>();
             service.AddScoped<IUserService, UserService>();
+            service.AddScoped<IPartnerService, PartnerService>();
             return service;
         }
     }
