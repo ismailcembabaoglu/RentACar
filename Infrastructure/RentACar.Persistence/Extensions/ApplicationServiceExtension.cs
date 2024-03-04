@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RentACar.Application.IServices;
+using RentACar.Domain.Models;
 using RentACar.Persistence.Services;
 using RentACar.Persistence.Users;
 using RentACarLocation.Application.IServices;
@@ -26,6 +27,8 @@ namespace RentACar.Persistence.Extensions
             service.AddScoped<IServiceService, ServiceService>();
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IPartnerService, PartnerService>();
+            service.AddScoped<IAboutService, AboutService>();
+           
             return service;
         }
     }

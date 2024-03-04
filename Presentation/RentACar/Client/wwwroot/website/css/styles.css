@@ -2663,10 +2663,10 @@ footer {
 }
 .nav-button {
     text-decoration: none;
-    color: orange;
+    color: #f86207;
     padding: 8px 15px;
     margin-right: 10px;
-    font-size:medium;
+    font-size: medium;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -2674,6 +2674,6 @@ footer {
 }
 
     .nav-button:hover {
-        color: darkorange;
+        color: #f86207;
         background-color: #555;
     }
