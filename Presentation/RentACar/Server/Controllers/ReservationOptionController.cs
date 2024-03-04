@@ -38,6 +38,15 @@ namespace RentACar.Server.Controllers
                 Value = await reservationOptionService.CreateReservationOption(ReservationOption)
             };
         }
+        [HttpPost("CreateNullToken")]
+        [AllowAnonymous]
+        public async Task<ServiceResponse<ReservationOptionDTO>> CreateReservationOptionNullToken([FromBody] ReservationOptionDTO ReservationOption)
+        {
+            return new ServiceResponse<ReservationOptionDTO>()
+            {
+                Value = await reservationOptionService.CreateReservationOption(ReservationOption)
+            };
+        }
         [HttpPost("Update")]
         public async Task<ServiceResponse<ReservationOptionDTO>> UpdateReservationOption([FromBody] ReservationOptionDTO ReservationOption)
         {

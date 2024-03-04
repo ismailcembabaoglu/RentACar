@@ -56,7 +56,6 @@ namespace RentACar.Persistence.Extensions
                 .ForMember(c => c.CarName, y=>y.MapFrom(y=>y.Car.CarName))
                 .ForMember(c=>c.CarModel,y=>y.MapFrom(y=>y.Car.CarModel))
                 .ForMember(c=>c.StartLocationAdress,y=>y.MapFrom(y=>y.StartLocation.City + " " + y.StartLocation.Decription))
-                .ForMember(c=>c.TotalPrice,y=>y.MapFrom(y=>y.TotalPrice))
                 .ForMember(c=>c.EndLocationAdress,y=>y.MapFrom(y=>y.EndLocation.City + " " + y.EndLocation.Decription));
             CreateMap<ReservationDTO,Reservation>();
 

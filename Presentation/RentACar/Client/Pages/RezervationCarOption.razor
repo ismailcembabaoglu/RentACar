@@ -226,6 +226,7 @@
     List<CarOptionDTO> car;
     bool popup;
     ReservationDTO Reservation = new ReservationDTO();
+    ReservationOptionDTO ReservationOption = new ReservationOptionDTO();
     decimal? optionPrice = 0;
     [Inject]
     ModalManager ModalManager { get; set; }
@@ -242,6 +243,7 @@
             Reservation.StartLocationId = startlocation;
             Reservation.EndLocationId = endlocation;
             Reservation.RentPrice = carPrice.Value;
+
         }
         catch (ApiException ex)
         {
@@ -257,7 +259,32 @@
     {
         try
         {
+            string url = "api/Reserve/CreateNullToken";
+            string reserveOptionUrl = "api/ReservationOption/CreateNullToken";
+            reservationDTO.AdditionalProductPrice = optionPrice;
             reservationDTO.TotalPrice = (carPrice.Value * day) + optionPrice.Value;
+            reservationDTO.CreateDate = DateTime.UtcNow;
+            reservationDTO.CreatedUser = "Müşteri";
+
+            reservationDTO = await Client.PostGetServiceResponseNullTokenAsync<ReservationDTO, ReservationDTO>(url, reservationDTO, true);
+            if (reservationDTO.Id != Guid.Empty)
+            {
+                if (car!=null)
+                {
+                    foreach (var caroption in car)
+                    {
+                        ReservationOption.CreatedUser = "Müşteri";
+                        ReservationOption.OptionId = caroption.OptionId;
+                        ReservationOption.ReservationId = reservationDTO.Id;
+                        ReservationOption.OptionCount = caroption.OptionCount;
+                        ReservationOption.TotalOptionPrice = caroption.OptionPrice.Value * caroption.OptionCount.Value;
+                        ReservationOption = await Client.PostGetServiceResponseNullTokenAsync<ReservationOptionDTO, ReservationOptionDTO>(reserveOptionUrl, ReservationOption, true);
+                    }
+                }
+             
+            }
+            await ModalManager.ShowMessageAsync("Başarılı", "Rezervasyon işlemi başarılı bir şekilde tamamlanmıştır mail üzerinden bilgilendirileceksiniz. ");
+
         }
         catch (ApiException ex)
         {

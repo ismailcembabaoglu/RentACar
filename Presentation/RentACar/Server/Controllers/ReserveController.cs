@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.DTOs;
 using RentACar.Application.IServices;
@@ -26,6 +27,15 @@ namespace RentACar.Server.Controllers
         }
         [HttpPost("Create")]
         public async Task<ServiceResponse<ReservationDTO>> CreateReservation([FromBody] ReservationDTO Reservation)
+        {
+            return new ServiceResponse<ReservationDTO>()
+            {
+                Value = await reservationService.CreateReservation(Reservation)
+            };
+        }
+        [HttpPost("CreateNullToken")]
+        [AllowAnonymous]
+        public async Task<ServiceResponse<ReservationDTO>> CreateReservationNullToken([FromBody] ReservationDTO Reservation)
         {
             return new ServiceResponse<ReservationDTO>()
             {
