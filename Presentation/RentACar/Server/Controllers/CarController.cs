@@ -29,14 +29,14 @@ namespace RentACar.Server.Controllers
                 Value = await carService.GetCars()
             };
         }
-        [HttpGet("CarRezervations")]
+        [HttpGet("CarRezervations/{startDate}/{endDate}")]
         [AllowAnonymous]
-        public async Task<ServiceResponse<List<CarDTO>>> GetCarRezervations([FromQuery] CarReservationDTO carReservation)
+        public async Task<ServiceResponse<List<CarDTO>>> GetCarRezervations(string startDate,string endDate)
         {
             return new ServiceResponse<List<CarDTO>>()
             {
 
-                Value = await carService.GetCarReservations(carReservation)
+                Value = await carService.GetCarReservations(startDate, endDate)
             };
         }
         [HttpPost("Create")]

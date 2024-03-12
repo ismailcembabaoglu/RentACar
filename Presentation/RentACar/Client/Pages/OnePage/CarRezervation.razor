@@ -8,7 +8,7 @@
 <RadzenDataList IsLoading="active" WrapItems="true" AllowPaging="true" Data="@cars" TItem="CarDTO">
     <Template Context="car">
         <RadzenCard Class="rz-my-4 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px">
-            
+
             <RadzenRow>
                 <RadzenColumn>
                     <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Class="rz-p-4">
@@ -65,7 +65,7 @@
                         <RadzenText TextStyle="TextStyle.Subtitle1"><b>Günlük Fiyat</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Body1"><b>@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", car.CarPrice)}")</b></RadzenText>
                         <RadzenText TextStyle="TextStyle.Subtitle1"><b>Toplam Tutar</b></RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body1" ><b>@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", car.CarPrice * day)}")</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1"><b>@($"{String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", car.CarPrice * day)}")</b></RadzenText>
                         <RadzenButton Variant="Variant.Flat" Style="background-color:#f86207" Text="Dahil Hizmetler"></RadzenButton>
                         <RadzenButton Variant="Variant.Flat" Style="background-color:#f86207" Click="()=>OptionsPage(car.Id,day,car.CarPrice)" Text="Hemen Kirala"></RadzenButton>
 
@@ -101,7 +101,7 @@
     [Inject]
     public HttpClient Client { get; set; }
     [Inject]
-    IJSRuntime JSRuntime{ get; set; }
+    IJSRuntime JSRuntime { get; set; }
     [Inject]
     NavigationManager navigationManager { get; set; }
     public CarReservationDTO? carRezervation;
@@ -143,23 +143,38 @@
     {
         cars = await GetCars(args.Skip, args.Top);
     }
+
     async Task<List<CarDTO>> GetCars(int skip, int take)
     {
-        var db = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>("api/car/CarRezervations?carReservation=" + carRezervation);
-        return db.Skip(skip).Take(take).ToList();
+        try
+        {
+            string url = "api/car/CarRezervations/" + carRezervation.StartDate.ToString("dd.MM.yyyy") + "/" + carRezervation.EndDate.ToString("dd.MM.yyyy");
+            var db = await Client.GetServiceResponseNullTokenAsync<List<CarDTO>>(url,true);
+            return db.Skip(skip).Take(take).ToList();
+        }
+        catch (ApiException ex)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw;
+
+        }
+
+
     }
-    public async Task OptionsPage(Guid carId, int day,decimal? carprice)
+    public async Task OptionsPage(Guid carId, int day, decimal? carprice)
     {
-        
+
         await dialogService.OpenAsync("Araç Opsiyonları", ds =>
         @<RezervationCarOption CarId="carId"
-       startlocation="startlocation"
-                endlocation="endlocation"
-                startdate="startdate"
-                enddate="enddate"
-                day="day"
-                carPrice="carprice"
-         />,
+                      startlocation="startlocation"
+                      endlocation="endlocation"
+                      startdate="startdate"
+                      enddate="enddate"
+                      day="day"
+                      carPrice="carprice" />,
         new DialogOptions() { CloseDialogOnEsc = true, Width = "100%", Height = "90%", ShowClose = true, Resizable = false, AutoFocusFirstElement = true, Draggable = true, ShowTitle = true });
     }
 

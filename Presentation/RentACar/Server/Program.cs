@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using RentACar.Persistence.Context;
 using RentACar.Persistence.Extensions;
 using RentACar.Server.Middlewares;
@@ -42,8 +43,8 @@ builder.Services.AddApplicationServices();
 
 builder.Services.AddDbContext<RentACarPsqlDbContext>(config =>
 {
-
-    config.UseNpgsql(configuration.GetConnectionString("PostgreSql"));
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("PostgreSql"));
+    config.UseNpgsql(dataSourceBuilder.Build());
     config.EnableSensitiveDataLogging();
 });
 builder.Services.AddCors(options =>

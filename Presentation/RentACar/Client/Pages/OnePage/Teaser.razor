@@ -214,8 +214,8 @@ background-size:contain;
     protected override async Task OnInitializedAsync()
     {
         customers = await Client.GetServiceResponseNullTokenAsync<List<LocationDTO>>("api/Locatio/Locations");
-        carRezervations.StartDate = DateTime.UtcNow;
-        carRezervations.EndDate = DateTime.UtcNow.AddDays(1);
+        carRezervations.StartDate = DateTime.Now;
+        carRezervations.EndDate = DateTime.Now.AddDays(1);
 
     }
     public async Task OpenOrder(CarReservationDTO carReservation)

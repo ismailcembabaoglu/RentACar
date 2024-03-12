@@ -28,16 +28,25 @@ namespace RentACar.Persistence.Services
         }
         public async Task<ReservationOptionDTO> CreateReservationOption(ReservationOptionDTO ReservationOption)
         {
-            var dbReservationOption = await context.ReservationOptions.Include(c => c.Option)
-                .Include(c => c.Reservation).Where(c => c.Id == ReservationOption.Id).FirstOrDefaultAsync();
-            if (dbReservationOption != null)
-                throw new Exception("Bu Rezervasyon Seçeneği Zaten Sistemde Kayıtlı");
-            dbReservationOption = mapper.Map<ReservationOption>(ReservationOption);
-            dbReservationOption.CreateDate = DateTime.UtcNow;
-            await context.ReservationOptions.AddAsync(dbReservationOption);
-            int result = await context.SaveChangesAsync();
+            try
+            {
+                var dbReservationOption = await context.ReservationOptions.Include(c => c.Option)
+    .Include(c => c.Reservation).Where(c => c.Id == ReservationOption.Id).FirstOrDefaultAsync();
+                if (dbReservationOption != null)
+                    throw new Exception("Bu Rezervasyon Seçeneği Zaten Sistemde Kayıtlı");
+                dbReservationOption = mapper.Map<ReservationOption>(ReservationOption);
+                dbReservationOption.CreateDate = DateTime.UtcNow;
+                await context.ReservationOptions.AddAsync(dbReservationOption);
+                int result = await context.SaveChangesAsync();
 
-            return mapper.Map<ReservationOptionDTO>(dbReservationOption);
+                return mapper.Map<ReservationOptionDTO>(dbReservationOption);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.InnerException.Message);
+            }
 
         }
 

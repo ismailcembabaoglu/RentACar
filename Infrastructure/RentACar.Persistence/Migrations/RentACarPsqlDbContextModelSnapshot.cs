@@ -67,7 +67,7 @@ namespace RentACar.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Abouts");
+                    b.ToTable("Abouts", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Car", b =>
@@ -123,7 +123,7 @@ namespace RentACar.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.CarLocation", b =>
@@ -140,7 +140,7 @@ namespace RentACar.Persistence.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("CarLocations");
+                    b.ToTable("CarLocations", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.CarOption", b =>
@@ -163,7 +163,7 @@ namespace RentACar.Persistence.Migrations
 
                     b.HasIndex("OptionId");
 
-                    b.ToTable("CarOptions");
+                    b.ToTable("CarOptions", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Location", b =>
@@ -174,7 +174,7 @@ namespace RentACar.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Option", b =>
@@ -188,7 +188,7 @@ namespace RentACar.Persistence.Migrations
                     b.Property<decimal>("OpsiyonPrice")
                         .HasColumnType("numeric");
 
-                    b.ToTable("Options");
+                    b.ToTable("Options", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Partner", b =>
@@ -203,7 +203,7 @@ namespace RentACar.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Partners");
+                    b.ToTable("Partners", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Reservation", b =>
@@ -266,7 +266,7 @@ namespace RentACar.Persistence.Migrations
 
                     b.HasIndex("StartLocationId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.ReservationOption", b =>
@@ -289,7 +289,7 @@ namespace RentACar.Persistence.Migrations
 
                     b.HasIndex("ReservationId");
 
-                    b.ToTable("ReservationOptions");
+                    b.ToTable("ReservationOptions", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Service", b =>
@@ -308,7 +308,7 @@ namespace RentACar.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.User", b =>
@@ -334,7 +334,7 @@ namespace RentACar.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.CarLocation", b =>

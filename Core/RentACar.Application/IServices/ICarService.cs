@@ -15,6 +15,6 @@ namespace RentACar.Application.IServices
         public Task<CarDTO> UpdateCar(CarDTO car);
         public Task<bool> DeleteCarId(Guid id);
         public Task<CarDTO> GetCarById(Guid Id);
-        public Task<List<CarDTO>> GetCarReservations(CarReservationDTO carReservation);
+        public Task<List<CarDTO>> GetCarReservations(string startDate,string endDate);
     }
 }

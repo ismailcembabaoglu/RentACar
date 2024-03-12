@@ -3,13 +3,16 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RentACar.Application.DTOs;
+using RentACar.Application.DTOs.OtherDTOs;
 using RentACar.Application.IServices;
 using RentACar.Domain.Models;
 using RentACar.Persistence.Context;
+using RentACar.Persistence.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace RentACar.Persistence.Services
@@ -27,6 +30,7 @@ namespace RentACar.Persistence.Services
         }
         public async Task<ReservationDTO> CreateReservation(ReservationDTO Reservation)
         {
+            
             var dbReservation = await context.Reservations
                 .Include(c => c.Car)
                 .Include(c => c.StartLocation)
@@ -38,6 +42,7 @@ namespace RentACar.Persistence.Services
             dbReservation.CreateDate = DateTime.UtcNow;
             await context.Reservations.AddAsync(dbReservation);
             int result = await context.SaveChangesAsync();
+            var car = await context.Cars.Where(c => c.Id == Reservation.CarId).FirstOrDefaultAsync();
 
             return mapper.Map<ReservationDTO>(dbReservation);
 

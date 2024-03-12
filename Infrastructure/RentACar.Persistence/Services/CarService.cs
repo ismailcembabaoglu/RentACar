@@ -20,7 +20,7 @@ namespace RentACar.Persistence.Services
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
         private readonly RentACarPsqlDbContext context;
-        public CarService(IMapper _mapper,IConfiguration _configuration,RentACarPsqlDbContext _context)
+        public  CarService(IMapper _mapper,IConfiguration _configuration,RentACarPsqlDbContext _context)
         {
             mapper= _mapper;
             configuration=_configuration;
@@ -59,20 +59,22 @@ namespace RentACar.Persistence.Services
             return dbCar;
         }
 
-        public async Task<List<CarDTO>> GetCarReservations(CarReservationDTO carReservation)
+        public async Task<List<CarDTO>> GetCarReservations(string startDate, string endDate)
         {
             List<CarDTO> carDTOs= new List<CarDTO>();
-
+           
           var cars= await context.Cars.ProjectTo<CarDTO>(mapper.ConfigurationProvider).ToListAsync();
             foreach (var car in cars)
             {
                 var reservation = await context.Reservations.Where(c => c.CarId == car.Id).FirstOrDefaultAsync();
                 if (reservation is not null )
                 {
-                    if ( reservation.StartDate < carReservation.StartDate
-                    && reservation.StartDate < carReservation.EndDate
-                    && reservation.EndDate < carReservation.StartDate
-                    && reservation.EndDate < carReservation.EndDate)
+                    var sagStartDate = DateTime.Parse(startDate);
+                    var sagEndDate = DateTime.Parse(endDate);
+                    var solEndDate = DateTime.Parse(reservation.EndDate.ToString("dd.MM.yyyy"));
+                    if ( 
+                     solEndDate < sagStartDate
+                    && solEndDate <sagEndDate)
                     {
                         carDTOs.Add(car);
                     }

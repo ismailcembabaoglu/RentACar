@@ -59,9 +59,9 @@ namespace RentACar.Persistence.Extensions
                 .ForMember(c=>c.EndLocationAdress,y=>y.MapFrom(y=>y.EndLocation.City + " " + y.EndLocation.Decription));
             CreateMap<ReservationDTO,Reservation>();
 
-            CreateMap<ReservationOption,ReservationOptionDTO>()
-                .ForMember(c=>c.OptionName,y=>y.MapFrom(y=>y.Option.OpsiyonName));
-            CreateMap<ReservationDTO,ReservationOption>();
+            CreateMap<ReservationOption, ReservationOptionDTO>()
+                .ForMember(c => c.OptionName, y => y.MapFrom(y => y.Option.OpsiyonName));
+            CreateMap<ReservationOptionDTO, ReservationOption>();
 
             CreateMap<Service,ServiceDTO>();
             CreateMap<ServiceDTO, Service>();

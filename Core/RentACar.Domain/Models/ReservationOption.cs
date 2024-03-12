@@ -12,7 +12,7 @@ namespace RentACar.Domain.Models
         public Guid ReservationId { get; set; }
         public virtual Reservation? Reservation { get; set; }
         public Guid OptionId { get; set; }
-        public Option Option { get; set; }
+        public Option? Option { get; set; }
         public int? OptionCount { get; set; }
         public decimal TotalOptionPrice { get; set; }
     }
