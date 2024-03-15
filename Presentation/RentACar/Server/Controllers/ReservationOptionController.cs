@@ -63,8 +63,16 @@ namespace RentACar.Server.Controllers
                 Value = await reservationOptionService.DeleteReservationOptionId(Id)
             };
         }
-        [HttpGet("ReservationById/{Id}")]
-        public async Task<ServiceResponse<ReservationOptionDTO>> GetReservationOptionById(Guid Id)
+        //[HttpGet("ReservationOptionById/{Id}")]
+        //public async Task<ServiceResponse<ReservationOptionDTO>> GetReservationOptionById(Guid Id)
+        //{
+        //    return new ServiceResponse<ReservationOptionDTO>()
+        //    {
+        //        Value = await reservationOptionService.GetReservationOptionById(Id)
+        //    };
+        //}
+        [HttpGet("ReservationOptionId/{Id}")]
+        public async Task<ServiceResponse<ReservationOptionDTO>> GetReservationOptionId(Guid Id)
         {
             return new ServiceResponse<ReservationOptionDTO>()
             {

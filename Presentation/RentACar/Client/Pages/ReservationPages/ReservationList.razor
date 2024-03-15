@@ -21,6 +21,14 @@
     <Columns>
         <RadzenDataGridColumn TItem="ReservationDTO" Context="Reservation" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
             <Template Context="Reservation">
+                <RadzenButton Icon="list" ButtonStyle="ButtonStyle.Info" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goReservationInfoPage(Reservation.Id))">
+                </RadzenButton>
+                <RadzenButton Icon="note_add" ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goReservationOptionPage(Reservation.Id))">
+                </RadzenButton>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="ReservationDTO" Context="Reservation" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="Reservation">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => goUpdateReservationPage(Reservation.Id))">
                 </RadzenButton>
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteReservation(Reservation.Id))">
@@ -83,7 +91,15 @@
     }
     protected void goUpdateReservationPage(Guid Id)
     {
-        NavigationManager.NavigateTo("/admin/reservation/edit/" + Id);
+        NavigationManager.NavigateTo("/admin/reservations/edit/" + Id);
+    }
+    protected void goReservationOptionPage(Guid reservationId)
+    {
+        NavigationManager.NavigateTo("/admin/ReservationOptions/" + reservationId);
+    }
+    protected void goReservationInfoPage(Guid reservationId)
+    {
+        NavigationManager.NavigateTo("/reservationcompleted/" + reservationId);
     }
     protected async Task DeleteReservation(Guid Id)
     {

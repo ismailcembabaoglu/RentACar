@@ -1,4 +1,4 @@
-﻿@page "/admin/ReservationOptions"
+﻿@page "/admin/ReservationOptions/{RezervationId:guid}"
 @using Blazored.LocalStorage
 @using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
@@ -38,6 +38,8 @@
 </RadzenDataGrid>
 
 @code {
+    [Parameter]
+    public Guid RezervationId { get; set; }
     [Inject]
     public HttpClient Client { get; set; }
 
@@ -62,7 +64,7 @@
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            ReservationOptions = await Client.GetServiceResponseAsync<List<ReservationOptionDTO>>("/api/ReservationOption/ReservationOptions", token);
+            ReservationOptions = await Client.GetServiceResponseNullTokenAsync<List<ReservationOptionDTO>>("/api/ReservationOption/ReservationsOptionsById/"+RezervationId);
         }
         catch (ApiException ex)
         {

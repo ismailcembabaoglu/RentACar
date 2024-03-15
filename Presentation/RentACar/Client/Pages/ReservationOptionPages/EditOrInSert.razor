@@ -30,17 +30,6 @@
                         </RadzenColumn>
 
                     </RadzenRow>
-                    <RadzenRow AlignItems="AlignItems.Center">
-                        <RadzenColumn Size="12" SizeMD="4">
-                            <RadzenLabel Text="Rezervasyon" />
-                        </RadzenColumn>
-                        <RadzenColumn Size="12" SizeMD="8">
-                            <RadzenDropDown @bind-Value="reservationOption.ReservationId" AllowClear="true" Placeholder="seçim yapınız" Data="@reservations" Style="width: 50%;" TextProperty="CarName" ValueProperty="Id" Name="Id">
-                            </RadzenDropDown>
-                            <ValidationMessage For="@(() => reservationOption.OptionId)" />
-                        </RadzenColumn>
-
-                    </RadzenRow>
 
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="12" SizeMD="4">
@@ -105,21 +94,34 @@
 
     private ReservationOptionDTO reservationOption = new ReservationOptionDTO();
 
-    
+
     private List<OptionDTO> options = new List<OptionDTO>();
     private List<ReservationDTO> reservations = new List<ReservationDTO>();
 
     protected async override Task OnInitializedAsync()
     {
-        string token = await localStorageService.GetItemAsStringAsync("token"); 
-        
-        options = await HttpClient.GetServiceResponseAsync<List<OptionDTO>>("api/Option/Options", token);
-        reservations = await HttpClient.GetServiceResponseAsync<List<ReservationDTO>>("api/Reserve/Reservations", token);
-        if (ReservationOptionId != null && ReservationOptionId != Guid.Empty)
+        try
+        {
+            string token = await localStorageService.GetItemAsStringAsync("token");
+
+            options = await HttpClient.GetServiceResponseAsync<List<OptionDTO>>("api/Option/Options", token);
+            reservations = await HttpClient.GetServiceResponseAsync<List<ReservationDTO>>("api/Reserve/Reservations", token);
+            if (ReservationOptionId != null && ReservationOptionId != Guid.Empty)
+            {
+
+                reservationOption = await HttpClient.GetServiceResponseAsync<ReservationOptionDTO>("/api/ReservationOption/ReservationOptionId/" + ReservationOptionId, token, true);
+            }
+        }
+        catch(ApiException ex)
+        {
+            await ModalManager.ShowMessageAsync("Api Exception", ex.Message);
+        }
+        catch (Exception ex)
         {
 
-            reservationOption = await HttpClient.GetServiceResponseAsync<ReservationOptionDTO>("api/ReservationOption/ReservationOptionById/" + ReservationOptionId, token, true);
+            await ModalManager.ShowMessageAsync("Exception", ex.Message);
         }
+   
 
 
     }
@@ -147,7 +149,7 @@
 
             reservationOption = await HttpClient.PostGetServiceResponseAsync<ReservationOptionDTO, ReservationOptionDTO>(url, reservationOption, token, true);
 
-            NavigationManager.NavigateTo("/admin/ reservationOptions");
+            NavigationManager.NavigateTo("/admin/reservations");
         }
         catch (ApiException ex)
         {
@@ -171,7 +173,7 @@
     }
     void goBackGroupList()
     {
-        NavigationManager.NavigateTo("/admin/ reservationOptions");
+        NavigationManager.NavigateTo("/admin/ reservations");
     }
     private object OnTransformModel(object model)
     {

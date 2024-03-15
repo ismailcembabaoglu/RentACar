@@ -33,7 +33,7 @@ background-size:contain;
                                     </Start>
                                     <ChildContent>
                                         <RadzenDropDown class="form-control autocomplete-location" AllowClear="true" @bind-Value=carRezervations.LocationStartId AllowVirtualization="true" Name="Location"
-                                                        AllowFiltering="true" Data=@customers TextProperty="Decription" ValueProperty="Id" Placeholder="Alış Lokasyonu Ara" />
+                                                        AllowFiltering="true" Data=@customers TextProperty="Decription" ValueProperty="Id"  Placeholder="Alış Lokasyonu Ara" />
 
                                     </ChildContent>
 
@@ -214,6 +214,8 @@ background-size:contain;
     protected override async Task OnInitializedAsync()
     {
         customers = await Client.GetServiceResponseNullTokenAsync<List<LocationDTO>>("api/Locatio/Locations");
+        carRezervations.LocationStartId =  customers.FirstOrDefault().Id;
+        carRezervations.LocationEndId =  customers.FirstOrDefault().Id;
         carRezervations.StartDate = DateTime.Now;
         carRezervations.EndDate = DateTime.Now.AddDays(1);
 

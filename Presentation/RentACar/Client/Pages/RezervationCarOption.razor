@@ -190,7 +190,7 @@
                                 </RadzenStack>
                             </RadzenStack>
                         </RadzenCard>
-                        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Rezervasyon Yap" />
+                        <RadzenButton ButtonType="ButtonType.Submit" IsBusy=@isBusy Size="ButtonSize.Large" Icon="save" Text="Rezervasyon Yap" />
                     </ChildContent>
                 </RadzenPanel>
 
@@ -235,6 +235,7 @@
     decimal? optionPrice = 0;
     [Inject]
     ModalManager ModalManager { get; set; }
+    bool isBusy = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -265,6 +266,7 @@
     {
         try
         {
+            isBusy = true;
             string url = "api/Reserve/CreateNullToken";
             string reserveOptionUrl = "api/ReservationOption/CreateNullToken";
             reservationDTO.AdditionalProductPrice = optionPrice;
@@ -295,8 +297,10 @@
             mailSender.SenderMail = reservationDTO.Email;
             mailSender.Content = $"{reservationDTO.StartDate}-{reservationDTO.EndDate} tarihleri arasında yapmış olduğunuz kiralama ile alakalı bilgilendirme için <a href='{navigation.BaseUri}reservationcompleted/{reservationDTO.Id}'>Buraya Tıkla</a>.";
             mailSender = await Client.PostGetServiceResponseNullTokenAsync<MailSenderDTO, MailSenderDTO>("api/Reserve/EmailSender", mailSender, true);
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Başarılı", Detail = "Rezervasyon işlemi başarılı bir şekilde tamamlanmıştır mail üzerinden bilgilendirileceksiniz. " ,Duration=2000});
-            navigation.NavigateTo($"/reservationcompleted/{reservationDTO.Id}", true);
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Başarılı", Detail = "işlem başarılı  mail üzerinden bilgilendirileceksiniz. " ,Duration=5000});
+            await Task.Delay(3000);
+            isBusy = false;
+            navigation.NavigateTo("/");
 
         }
         catch (ApiException ex)
