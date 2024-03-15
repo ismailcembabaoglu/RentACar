@@ -4,7 +4,7 @@
 @using RentACar.Client.Utils
 @inject DialogService dialogService
 @layout EmptyLayout
-
+@* <p>@navigationManager.BaseUri</p> *@
 <RadzenDataList IsLoading="active" WrapItems="true" AllowPaging="true" Data="@cars" TItem="CarDTO">
     <Template Context="car">
         <RadzenCard Class="rz-my-4 rz-mx-auto" Style="border-style:solid;border-color:#f86207;border-width:2px;border-radius:5px">

@@ -10,13 +10,13 @@ namespace RentACar.Domain.Models
     public class Reservation:BaseModel
     {
         public Guid CarId { get; set; }
-        public virtual Car? Car { get; set; }
+        public  Car? Car { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid StartLocationId { get; set; }
-        public Location StartLocation { get; set; }
+        public Location? StartLocation { get; set; }
         public Guid EndLocationId { get; set; }
-        public Location EndLocation { get; set; }
+        public Location? EndLocation { get; set; }
         public decimal RentPrice { get; set; }
         public decimal? AdditionalProductPrice { get; set; }
         public decimal TotalPrice { get; set; }

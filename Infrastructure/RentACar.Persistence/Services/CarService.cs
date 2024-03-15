@@ -72,8 +72,7 @@ namespace RentACar.Persistence.Services
                     var sagStartDate = DateTime.Parse(startDate);
                     var sagEndDate = DateTime.Parse(endDate);
                     var solEndDate = DateTime.Parse(reservation.EndDate.ToString("dd.MM.yyyy"));
-                    if ( 
-                     solEndDate < sagStartDate
+                    if (  solEndDate < sagStartDate
                     && solEndDate <sagEndDate)
                     {
                         carDTOs.Add(car);

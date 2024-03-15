@@ -2,9 +2,11 @@
 @using Morris.Blazor.Validation
 @using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
+@using RentACar.Application.DTOs.OtherDTOs
 @using RentACar.Application.Validators
 @using RentACar.Client.Utils
 @inject DialogService dialogService
+@inject NotificationService NotificationService
 <EditForm Model="@Reservation" OnValidSubmit="SubmitForm">
     <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<ReservationOptionValidator>()) OnTransformModel=OnTransformModel />
    
@@ -222,14 +224,18 @@
     public int day { get; set; }
     [Inject]
     public HttpClient Client { get; set; }
+    [Inject]
+    public NavigationManager navigation{ get; set; }
     List<CarOptionDTO> carOptions;
     List<CarOptionDTO> car;
+    MailSenderDTO mailSender = new MailSenderDTO();
     bool popup;
     ReservationDTO Reservation = new ReservationDTO();
     ReservationOptionDTO ReservationOption = new ReservationOptionDTO();
     decimal? optionPrice = 0;
     [Inject]
     ModalManager ModalManager { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -263,9 +269,8 @@
             string reserveOptionUrl = "api/ReservationOption/CreateNullToken";
             reservationDTO.AdditionalProductPrice = optionPrice;
             reservationDTO.TotalPrice = (carPrice.Value * day) + optionPrice.Value;
-            reservationDTO.CreateDate = DateTime.UtcNow;
+
             reservationDTO.CreatedUser = "Müşteri";
-            reservationDTO.Id = Guid.NewGuid();
 
             reservationDTO = await Client.PostGetServiceResponseNullTokenAsync<ReservationDTO, ReservationDTO>(url, reservationDTO, true);
             if (reservationDTO.Id != Guid.Empty)
@@ -284,9 +289,14 @@
                         ReservationOption = await Client.PostGetServiceResponseNullTokenAsync<ReservationOptionDTO, ReservationOptionDTO>(reserveOptionUrl, ReservationOption, true);
                     }
                 }
-             
+
             }
-            await ModalManager.ShowMessageAsync("Başarılı", "Rezervasyon işlemi başarılı bir şekilde tamamlanmıştır mail üzerinden bilgilendirileceksiniz. ");
+            mailSender.Subject="Eagle Rent A Car bilgilendirme";
+            mailSender.SenderMail = reservationDTO.Email;
+            mailSender.Content = $"{reservationDTO.StartDate}-{reservationDTO.EndDate} tarihleri arasında yapmış olduğunuz kiralama ile alakalı bilgilendirme için <a href='{navigation.BaseUri}reservationcompleted/{reservationDTO.Id}'>Buraya Tıkla</a>.";
+            mailSender = await Client.PostGetServiceResponseNullTokenAsync<MailSenderDTO, MailSenderDTO>("api/Reserve/EmailSender", mailSender, true);
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Başarılı", Detail = "Rezervasyon işlemi başarılı bir şekilde tamamlanmıştır mail üzerinden bilgilendirileceksiniz. " ,Duration=2000});
+            navigation.NavigateTo($"/reservationcompleted/{reservationDTO.Id}", true);
 
         }
         catch (ApiException ex)

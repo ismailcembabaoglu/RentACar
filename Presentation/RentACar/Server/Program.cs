@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
@@ -11,7 +15,10 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
-
+var loggerFactory = LoggerFactory.Create(builder => {
+    builder.AddConsole();
+});
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.ConfigureMapping();
@@ -43,7 +50,10 @@ builder.Services.AddApplicationServices();
 
 builder.Services.AddDbContext<RentACarPsqlDbContext>(config =>
 {
+   
     var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("PostgreSql"));
+    config.UseLoggerFactory(loggerFactory).UseNpgsql(dataSourceBuilder.Build());
+    config.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)); 
     config.UseNpgsql(dataSourceBuilder.Build());
     config.EnableSensitiveDataLogging();
 });

@@ -14,5 +14,6 @@ namespace RentACar.Application.IServices
         public Task<ReservationOptionDTO> UpdateReservationOption(ReservationOptionDTO ReservationOption);
         public Task<bool> DeleteReservationOptionId(Guid id);
         public Task<ReservationOptionDTO> GetReservationOptionById(Guid id);
+        public Task<List<ReservationOptionDTO>> GetReservationOptionsById(Guid reservationId);
     }
 }

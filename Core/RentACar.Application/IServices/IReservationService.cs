@@ -1,4 +1,5 @@
 ﻿using RentACar.Application.DTOs;
+using RentACar.Application.DTOs.OtherDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace RentACar.Application.IServices
         public Task<ReservationDTO> UpdateReservation(ReservationDTO Reservation);
         public Task<bool> DeleteReservation(Guid id);
         public Task<ReservationDTO> GetReservationById(Guid id);
+        public void SenderEmail(MailSenderDTO mail);
     }
 }

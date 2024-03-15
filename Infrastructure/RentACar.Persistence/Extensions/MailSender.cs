@@ -1,53 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Net.Security;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using RentACar.Application.DTOs.OtherDTOs;
+using RentACar.Application.CustomExceptions;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace RentACar.Persistence.Extensions
 {
     public static class MailSender
     {
-        public static void Gonder(MailSenderDTO mailSender)
+        public static  void Gonder(MailSenderDTO mailSender)
         {
             try
             {
-                MailMessage ePosta = new MailMessage();
-            ePosta.From = new MailAddress("babaogluismailcem@gmail.com");
-            //
-            ePosta.To.Add(mailSender.SenderMail);
-            //ePosta.To.Add("eposta2@gmail.com");
-            //ePosta.To.Add("eposta3@gmail.com");
-            //
-            //ePosta.Attachments.Add(new Attachment(@"C:\deneme-upload.jpg"));
-            ePosta.Subject = mailSender.Subject;
-            ePosta.Body = mailSender.Content;
-            ePosta.IsBodyHtml = true;
-            SmtpClient smtp = new SmtpClient();
-            smtp.Port = 587;
-            smtp.Host = "smtp.gmail.com";
-            smtp.UseDefaultCredentials = false;
-            smtp.EnableSsl = true;
-            smtp.Credentials = new System.Net.NetworkCredential("babaogluismailcem@gmail.com", "Cib_1742");
+                var email = new MimeMessage();
+                email.From.Add(MailboxAddress.Parse("test@ivaheryerde.com.tr"));
+                email.To.Add(MailboxAddress.Parse(mailSender.SenderMail));
+                email.Subject = mailSender.Subject;
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mailSender.Content };
+                using var smtp = new SmtpClient();
+                smtp.SslProtocols = System.Security.Authentication.SslProtocols.Tls;
+                smtp.CheckCertificateRevocation = false;
+                smtp.Connect("mail.ivaheryerde.com.tr", 587, MailKit.Security.SecureSocketOptions.None);
 
-            // object userState = ePosta;
-           
-            
-                ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-                {
-                    return true;
-                };
-                // smtp.SendAsync(ePosta, (object)ePosta);
-                smtp.Send(ePosta);
+                smtp.Authenticate("test@ivaheryerde.com.tr", "Cib_17421");
+
+                smtp.Send(email);
+                smtp.Disconnect(true);
 
             }
-           
-            catch (SmtpException ex)
+            catch (ApiException ex)
             {
                 throw new Exception(ex.Message);
             }

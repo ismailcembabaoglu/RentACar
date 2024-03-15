@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using RentACar.Application.DTOs;
 using RentACar.Application.DTOs.OtherDTOs;
@@ -40,6 +41,7 @@ namespace RentACar.Persistence.Services
                 throw new Exception("Bu Rezervasyon Zaten Sistemde Kayıtlı");
             dbReservation = mapper.Map<Reservation>(Reservation);
             dbReservation.CreateDate = DateTime.UtcNow;
+            
             await context.Reservations.AddAsync(dbReservation);
             int result = await context.SaveChangesAsync();
             var car = await context.Cars.Where(c => c.Id == Reservation.CarId).FirstOrDefaultAsync();
@@ -77,6 +79,12 @@ namespace RentACar.Persistence.Services
                 .Include(c => c.EndLocation)
                 .ProjectTo<ReservationDTO>(mapper.ConfigurationProvider).ToListAsync();
             return dbReservation;
+        }
+
+        public void SenderEmail(MailSenderDTO mail)
+        {
+           MailSender.Gonder(mail);
+
         }
 
         public async Task<ReservationDTO> UpdateReservation(ReservationDTO Reservation)

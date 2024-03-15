@@ -71,6 +71,15 @@ namespace RentACar.Server.Controllers
                 Value = await reservationOptionService.GetReservationOptionById(Id)
             };
         }
+        [HttpGet("ReservationsOptionsById/{ReservationId}")]
+        [AllowAnonymous]
+        public async Task<ServiceResponse<List<ReservationOptionDTO>>> GetReservationOptionsById(Guid ReservationId)
+        {
+            return new ServiceResponse<List<ReservationOptionDTO>>()
+            {
+                Value = await reservationOptionService.GetReservationOptionsById(ReservationId)
+            };
+        }
 
     }
 }

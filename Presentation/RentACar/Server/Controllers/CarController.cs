@@ -64,6 +64,7 @@ namespace RentACar.Server.Controllers
             };
         }
         [HttpGet("CarById/{Id}")]
+        [AllowAnonymous]
         public async Task<ServiceResponse<CarDTO>> GetCarById(Guid Id)
         {
             return new ServiceResponse<CarDTO>()

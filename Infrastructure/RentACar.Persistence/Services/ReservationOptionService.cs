@@ -81,6 +81,13 @@ namespace RentACar.Persistence.Services
             return dbReservationOption;
         }
 
+        public async Task<List<ReservationOptionDTO>> GetReservationOptionsById(Guid reservationId)
+        {
+            var dbReservationOption = await context.ReservationOptions.Include(c => c.Option)
+                .Include(c => c.Reservation).ProjectTo<ReservationOptionDTO>(mapper.ConfigurationProvider).Where(c => c.ReservationId == reservationId).ToListAsync();
+            return dbReservationOption;
+        }
+
         public async Task<ReservationOptionDTO> UpdateReservationOption(ReservationOptionDTO ReservationOption)
         {
             var dbReservationOption = await context.ReservationOptions.Include(c => c.Option)
