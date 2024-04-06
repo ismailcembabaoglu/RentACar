@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentACar.Persistence.Context;
 
 #nullable disable
@@ -12,8 +12,8 @@ using RentACar.Persistence.Context;
 namespace RentACar.Persistence.Migrations
 {
     [DbContext(typeof(RentACarPsqlDbContext))]
-    [Migration("20231213002201_mig_car_photo_column")]
-    partial class mig_car_photo_column
+    [Migration("20240327001329_mig_mssql")]
+    partial class mig_mssql
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,31 +21,31 @@ namespace RentACar.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.14")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("RentACar.Domain.Models.BaseModels.BaseModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Decription")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedUser")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -54,55 +54,77 @@ namespace RentACar.Persistence.Migrations
                     b.UseTpcMappingStrategy();
                 });
 
+            modelBuilder.Entity("RentACar.Domain.Models.About", b =>
+                {
+                    b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Abouts");
+                });
+
             modelBuilder.Entity("RentACar.Domain.Models.Car", b =>
                 {
                     b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
 
                     b.Property<string>("CarModel")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CarName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("CarPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CarYear")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Depozit")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Door")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("DrivingLicense")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FuelType")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsAc")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Luggage")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Person")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalKm")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("gear")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Cars");
                 });
@@ -112,10 +134,10 @@ namespace RentACar.Persistence.Migrations
                     b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
 
                     b.Property<Guid>("CarId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("LocationId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("CarId");
 
@@ -129,10 +151,16 @@ namespace RentACar.Persistence.Migrations
                     b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
 
                     b.Property<Guid>("CarId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsOption")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OptionCount")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("OptionId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("CarId");
 
@@ -147,7 +175,7 @@ namespace RentACar.Persistence.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Locations");
                 });
@@ -158,12 +186,27 @@ namespace RentACar.Persistence.Migrations
 
                     b.Property<string>("OpsiyonName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OpsiyonPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.ToTable("Options");
+                });
+
+            modelBuilder.Entity("RentACar.Domain.Models.Partner", b =>
+                {
+                    b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartnerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Partners");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Reservation", b =>
@@ -171,29 +214,60 @@ namespace RentACar.Persistence.Migrations
                     b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
 
                     b.Property<decimal?>("AdditionalProductPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ArrivalFlightNo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CarId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EndLocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("IdentityNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("RentPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("ReservationId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ReturnFlightNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("StartLocationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("ReservationId");
+                    b.HasIndex("EndLocationId");
+
+                    b.HasIndex("StartLocationId");
 
                     b.ToTable("Reservations");
                 });
@@ -203,16 +277,16 @@ namespace RentACar.Persistence.Migrations
                     b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
 
                     b.Property<int?>("OptionCount")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("OptionId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReservationId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalOptionPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasIndex("OptionId");
 
@@ -225,9 +299,17 @@ namespace RentACar.Persistence.Migrations
                 {
                     b.HasBaseType("RentACar.Domain.Models.BaseModels.BaseModel");
 
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServiceDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ServiceName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Services");
                 });
@@ -238,22 +320,22 @@ namespace RentACar.Persistence.Migrations
 
                     b.Property<string>("EMailAddress")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Users");
                 });
@@ -304,11 +386,23 @@ namespace RentACar.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("RentACar.Domain.Models.Reservation", null)
-                        .WithMany("Reservations")
-                        .HasForeignKey("ReservationId");
+                    b.HasOne("RentACar.Domain.Models.Location", "EndLocation")
+                        .WithMany("EndLocations")
+                        .HasForeignKey("EndLocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("RentACar.Domain.Models.Location", "StartLocation")
+                        .WithMany("StartLocations")
+                        .HasForeignKey("StartLocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Car");
+
+                    b.Navigation("EndLocation");
+
+                    b.Navigation("StartLocation");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.ReservationOption", b =>
@@ -342,6 +436,10 @@ namespace RentACar.Persistence.Migrations
             modelBuilder.Entity("RentACar.Domain.Models.Location", b =>
                 {
                     b.Navigation("CarLocations");
+
+                    b.Navigation("EndLocations");
+
+                    b.Navigation("StartLocations");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Models.Option", b =>
@@ -354,8 +452,6 @@ namespace RentACar.Persistence.Migrations
             modelBuilder.Entity("RentACar.Domain.Models.Reservation", b =>
                 {
                     b.Navigation("ReservationOptions");
-
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

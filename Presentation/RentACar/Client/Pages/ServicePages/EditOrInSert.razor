@@ -100,12 +100,12 @@
             if (ServiceId != null && ServiceId != Guid.Empty)
             {
                 url = "api/Service/update";
-                service.UpdatedDate = DateTime.UtcNow;
+                service.UpdatedDate = DateTime.Now;
                 service.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                service.CreateDate = DateTime.UtcNow;
+                service.CreateDate = DateTime.Now;
                 service.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

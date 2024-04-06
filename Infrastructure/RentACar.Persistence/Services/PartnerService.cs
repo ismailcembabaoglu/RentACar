@@ -31,7 +31,7 @@ namespace RentACar.Persistence.Services
             if (dbPartner != null)
                 throw new Exception("Bu Servis Zaten Sistemde Kayıtlı");
             dbPartner = mapper.Map<RentACar.Domain.Models.Partner>(Partner);
-            dbPartner.CreateDate = DateTime.UtcNow;
+            dbPartner.CreateDate = DateTime.Now;
             await context.Partners.AddAsync(dbPartner);
             int result = await context.SaveChangesAsync();
 

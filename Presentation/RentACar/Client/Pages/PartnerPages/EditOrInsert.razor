@@ -84,12 +84,12 @@
             if (PartnerId != null && PartnerId != Guid.Empty)
             {
                 url = "api/Service/update";
-                partner.UpdatedDate = DateTime.UtcNow;
+                partner.UpdatedDate = DateTime.Now;
                 partner.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                partner.CreateDate = DateTime.UtcNow;
+                partner.CreateDate = DateTime.Now;
                 partner.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

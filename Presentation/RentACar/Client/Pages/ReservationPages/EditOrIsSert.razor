@@ -96,7 +96,7 @@
                             <RadzenFormField Text="Alış Tarih & Saat" Variant="@variant">
 
 
-                                <RadzenDatePicker class="form-control datepicker" @bind-Value=reservation.StartDate ShowTime="true" HourFormat="24" Min="DateTime.UtcNow.Date" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
+                                <RadzenDatePicker class="form-control datepicker" @bind-Value=reservation.StartDate ShowTime="true" HourFormat="24" Min="DateTime.Now.Date" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
 
 
 
@@ -115,7 +115,7 @@
                             <RadzenFormField Text="Bırakış Tarih & Saat" Variant="@variant">
 
 
-                                <RadzenDatePicker class="form-control datepicker" @bind-Value=reservation.EndDate ShowTime="true" HourFormat="24" Min="DateTime.UtcNow.Date" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
+                                <RadzenDatePicker class="form-control datepicker" @bind-Value=reservation.EndDate ShowTime="true" HourFormat="24" Min="DateTime.Now.Date" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
 
 
 
@@ -343,12 +343,12 @@
             if (ReservationId != null && ReservationId != Guid.Empty)
             {
                 url = "api/Reservation/update";
-                reservation.UpdatedDate = DateTime.UtcNow;
+                reservation.UpdatedDate = DateTime.Now;
                 reservation.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                reservation.CreateDate = DateTime.UtcNow;
+                reservation.CreateDate = DateTime.Now;
                 reservation.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

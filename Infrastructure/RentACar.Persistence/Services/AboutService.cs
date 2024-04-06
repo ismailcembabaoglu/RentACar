@@ -33,7 +33,7 @@ namespace RentACar.Persistence.Services
             if (dbAbout != null)
                 throw new Exception("Bu Hakkımızda Kısmı Zaten Sistemde Kayıtlı");
             dbAbout = mapper.Map<About>(About);
-            dbAbout.CreateDate = DateTime.UtcNow;
+            dbAbout.CreateDate = DateTime.Now;
             await context.Abouts.AddAsync(dbAbout);
             int result = await context.SaveChangesAsync();
 
@@ -49,6 +49,13 @@ namespace RentACar.Persistence.Services
             context.Abouts.Remove(dbAbout);
             int result = await context.SaveChangesAsync();
             return result > 0;
+        }
+
+        public async Task<AboutDTO> GetAbout()
+        {
+           var dbAbout = await context.Abouts.ProjectTo<AboutDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
+
+            return dbAbout;
         }
 
         public async Task<AboutDTO> GetAboutById(Guid Id)

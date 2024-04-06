@@ -33,7 +33,7 @@ namespace RentACar.Persistence.Services
             if (dbCarLocation != null)
                 throw new Exception("Bu konum Zaten Sistemde Kayıtlı");
             dbCarLocation = mapper.Map<CarLocation>(CarLocation);
-            dbCarLocation.CreateDate = DateTime.UtcNow;
+            dbCarLocation.CreateDate = DateTime.Now;
             await context.CarLocations.AddAsync(dbCarLocation);
             int result = await context.SaveChangesAsync();
 

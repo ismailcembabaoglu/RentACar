@@ -86,7 +86,7 @@ background-size:contain;
                                 <RadzenFormField Text="Alış Tarih & Saat" Variant="@variant">
 
 
-                                    <RadzenDatePicker class="form-control datepicker" @bind-Value=carRezervations.StartDate ShowTime="true" HourFormat="24" Min="DateTime.UtcNow.Date" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
+                                    <RadzenDatePicker class="form-control datepicker" @bind-Value=carRezervations.StartDate ShowTime="true" HourFormat="24" Min="DateTime.Now.Date" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
 
 
 
@@ -106,7 +106,7 @@ background-size:contain;
                                 <RadzenFormField Text="Bırakış Tarih & Saat" Variant="@variant">
 
 
-                                    <RadzenDatePicker class="form-control datepicker" @bind-Value=carRezervations.EndDate ShowTime="true" Min="DateTime.UtcNow.Date.AddDays(1)" HourFormat="24" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
+                                    <RadzenDatePicker class="form-control datepicker" @bind-Value=carRezervations.EndDate ShowTime="true" Min="DateTime.Now.Date.AddDays(1)" HourFormat="24" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerHourFormat" />
 
 
 

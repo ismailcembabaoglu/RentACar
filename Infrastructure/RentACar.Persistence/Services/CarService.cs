@@ -32,7 +32,7 @@ namespace RentACar.Persistence.Services
             if (dbCar != null)
                 throw new Exception("Bu Araba Zaten Sistemde Kayıtlı");
             dbCar = mapper.Map<Car>(Car);
-            dbCar.CreateDate = DateTime.UtcNow;
+            dbCar.CreateDate = DateTime.Now;
             await context.Cars.AddAsync(dbCar);
             int result = await context.SaveChangesAsync();
 
@@ -66,14 +66,17 @@ namespace RentACar.Persistence.Services
           var cars= await context.Cars.ProjectTo<CarDTO>(mapper.ConfigurationProvider).ToListAsync();
             foreach (var car in cars)
             {
-                var reservation = await context.Reservations.Where(c => c.CarId == car.Id).FirstOrDefaultAsync();
+                var reservation = await context.Reservations.Where(c => c.CarId == car.Id).OrderByDescending(c=>c.Id).FirstOrDefaultAsync();
                 if (reservation is not null )
                 {
                     var sagStartDate = DateTime.Parse(startDate);
                     var sagEndDate = DateTime.Parse(endDate);
-                    var solEndDate = DateTime.Parse(reservation.EndDate.ToString("dd.MM.yyyy"));
-                    if (  solEndDate < sagStartDate
-                    && solEndDate <sagEndDate)
+                    var solEndCarDate = DateTime.Parse(reservation.EndDate.ToString("dd.MM.yyyy"));
+                    var sagStartCarDate = DateTime.Parse(reservation.StartDate.ToString("dd.MM.yyyy"));
+                    if (!(sagEndDate < sagStartCarDate || sagStartDate > solEndCarDate))
+                    {
+                    }
+                    else
                     {
                         carDTOs.Add(car);
                     }

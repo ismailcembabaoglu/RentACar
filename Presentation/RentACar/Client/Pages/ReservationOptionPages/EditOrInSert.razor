@@ -137,12 +137,12 @@
             if (ReservationOptionId != null && ReservationOptionId != Guid.Empty)
             {
                 url = "api/ReservationOption/update";
-                reservationOption.UpdatedDate = DateTime.UtcNow;
+                reservationOption.UpdatedDate = DateTime.Now;
                 reservationOption.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                reservationOption.CreateDate = DateTime.UtcNow;
+                reservationOption.CreateDate = DateTime.Now;
                 reservationOption.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

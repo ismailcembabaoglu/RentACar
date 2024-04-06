@@ -35,7 +35,7 @@ namespace RentACar.Persistence.Users
             if (dbUser != null)
                 throw new Exception("Bu Kullanıcı Zaten Sistemde Kayıtlı");
             dbUser = mapper.Map<User>(User);
-            dbUser.CreateDate = DateTime.UtcNow;
+            dbUser.CreateDate = DateTime.Now;
             await context.Users.AddAsync(dbUser);
             int result = await context.SaveChangesAsync();
 

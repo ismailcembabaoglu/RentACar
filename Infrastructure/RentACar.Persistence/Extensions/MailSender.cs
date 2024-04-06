@@ -20,16 +20,16 @@ namespace RentACar.Persistence.Extensions
             try
             {
                 var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("test@ivaheryerde.com.tr"));
+                email.From.Add(MailboxAddress.Parse("info@eaglerentacar.com.tr"));
                 email.To.Add(MailboxAddress.Parse(mailSender.SenderMail));
                 email.Subject = mailSender.Subject;
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mailSender.Content };
                 using var smtp = new SmtpClient();
                 smtp.SslProtocols = System.Security.Authentication.SslProtocols.Tls;
                 smtp.CheckCertificateRevocation = false;
-                smtp.Connect("mail.ivaheryerde.com.tr", 587, MailKit.Security.SecureSocketOptions.None);
+                smtp.Connect("mail.eaglerentacar.com.tr", 587, MailKit.Security.SecureSocketOptions.None);
 
-                smtp.Authenticate("test@ivaheryerde.com.tr", "Cib_17421");
+                smtp.Authenticate("info@eaglerentacar.com.tr", "Cib_17421");
 
                 smtp.Send(email);
                 smtp.Disconnect(true);

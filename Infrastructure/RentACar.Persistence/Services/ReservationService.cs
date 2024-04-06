@@ -40,7 +40,7 @@ namespace RentACar.Persistence.Services
             if (dbReservation != null)
                 throw new Exception("Bu Rezervasyon Zaten Sistemde Kayıtlı");
             dbReservation = mapper.Map<Reservation>(Reservation);
-            dbReservation.CreateDate = DateTime.UtcNow;
+            dbReservation.CreateDate = DateTime.Now;
             
             await context.Reservations.AddAsync(dbReservation);
             int result = await context.SaveChangesAsync();

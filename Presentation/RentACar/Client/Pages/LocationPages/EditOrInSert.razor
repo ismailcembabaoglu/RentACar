@@ -106,12 +106,12 @@
             if (LocationId != null && LocationId != Guid.Empty)
             {
                 url = "api/Locatio/update";
-                location.UpdatedDate = DateTime.UtcNow;
+                location.UpdatedDate = DateTime.Now;
                 location.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                location.CreateDate = DateTime.UtcNow;
+                location.CreateDate = DateTime.Now;
                 location.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

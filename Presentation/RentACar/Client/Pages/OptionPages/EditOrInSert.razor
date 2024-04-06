@@ -107,12 +107,12 @@
             if (OptionId != null && OptionId != Guid.Empty)
             {
                 url = "api/Option/update";
-                option.UpdatedDate = DateTime.UtcNow;
+                option.UpdatedDate = DateTime.Now;
                 option.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                option.CreateDate = DateTime.UtcNow;
+                option.CreateDate = DateTime.Now;
                 option.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

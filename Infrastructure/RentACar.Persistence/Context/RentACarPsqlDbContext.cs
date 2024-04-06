@@ -27,8 +27,37 @@ namespace RentACar.Persistence.Context
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Partner> Partners { get; set; }
         public virtual DbSet<About> Abouts { get; set; }
-        
 
+        private void Seed(ModelBuilder modelBuilder)
+        {
+
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = Guid.Parse("822E044B-5656-4B44-AD0F-01D7761E2CBE"),
+                CreateDate = DateTime.Now,
+                CreatedUser = "Admin",
+                EMailAddress = "icb1742@gmail.com",
+                Password = "17421742",
+                FirstName = "Süper",
+                LastName = "Admin",
+                IsActive = true,
+
+            });
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = Guid.Parse("C326EE05-4878-4219-958D-AD3CAEFA4E11"),
+                CreateDate = DateTime.Now,
+                CreatedUser = "Admin",
+                EMailAddress = "eagledenizcilik@outlook.com.tr",
+                Password = "Eagle0204.",
+                FirstName = "Alican",
+                LastName = "Kartal",
+                IsActive = true,
+
+            });
+
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Car Location İlişkiler
@@ -59,7 +88,7 @@ namespace RentACar.Persistence.Context
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new PartnerMap());
             modelBuilder.ApplyConfiguration(new AboutMap());
-           
+            Seed(modelBuilder);
             base.OnModelCreating(modelBuilder);
         }
     }

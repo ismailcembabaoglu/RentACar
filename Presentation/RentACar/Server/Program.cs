@@ -18,7 +18,7 @@ ConfigurationManager configuration = builder.Configuration;
 var loggerFactory = LoggerFactory.Create(builder => {
     builder.AddConsole();
 });
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.ConfigureMapping();
@@ -51,10 +51,10 @@ builder.Services.AddApplicationServices();
 builder.Services.AddDbContext<RentACarPsqlDbContext>(config =>
 {
    
-    var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("PostgreSql"));
-    config.UseLoggerFactory(loggerFactory).UseNpgsql(dataSourceBuilder.Build());
-    config.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)); 
-    config.UseNpgsql(dataSourceBuilder.Build());
+    //var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("PostgreSql"));
+    //config.UseLoggerFactory(loggerFactory).UseNpgsql(dataSourceBuilder.Build());
+    //config.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)); 
+    config.UseSqlServer(configuration.GetConnectionString("Mssql"));
     config.EnableSensitiveDataLogging();
 });
 builder.Services.AddCors(options =>

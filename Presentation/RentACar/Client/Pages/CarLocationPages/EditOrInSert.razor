@@ -112,12 +112,12 @@
             if (CarLocationId != null && CarLocationId != Guid.Empty)
             {
                 url = "api/CarLocatio/update";
-                carLocation.UpdatedDate = DateTime.UtcNow;
+                carLocation.UpdatedDate = DateTime.Now;
                 carLocation.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             else
             {
-                carLocation.CreateDate = DateTime.UtcNow;
+                carLocation.CreateDate = DateTime.Now;
                 carLocation.CreatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
             string token = await localStorageService.GetItemAsStringAsync("token");

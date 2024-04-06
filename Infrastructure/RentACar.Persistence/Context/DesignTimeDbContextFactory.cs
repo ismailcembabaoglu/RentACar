@@ -18,8 +18,8 @@ namespace RentACar.Persistence.Context
             configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../Presentation/RentACar/Server"));
             configurationManager.AddJsonFile("appsettings.json");
             var builder = new DbContextOptionsBuilder<RentACarPsqlDbContext>();
-            var dbDataSource = new NpgsqlDataSourceBuilder(configurationManager.GetConnectionString("PostgreSql"));
-            builder.UseNpgsql(dbDataSource.Build());
+            //var dbDataSource = new NpgsqlDataSourceBuilder(configurationManager.GetConnectionString("PostgreSql"));
+            builder.UseSqlServer(configurationManager.GetConnectionString("Mssql"));
             return new RentACarPsqlDbContext(builder.Options);
         }
     }

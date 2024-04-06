@@ -61,6 +61,15 @@ namespace RentACar.Server.Controllers
                 Value = await aboutService.GetAboutById(Id)
             };
         }
+        [HttpGet("AboutBys")]
+        [AllowAnonymous]
+        public async Task<ServiceResponse<AboutDTO>> GetAboutBy()
+        {
+            return new ServiceResponse<AboutDTO>()
+            {
+                Value = await aboutService.GetAbout()
+            };
+        }
 
     }
 }

@@ -10,6 +10,7 @@ namespace RentACar.Application.IServices
     public interface IAboutService
     {
         public Task<List<AboutDTO>> GetAbouts();
+        public Task<AboutDTO> GetAbout();
         public Task<AboutDTO> CreateAbout(AboutDTO About);
 
         public Task<AboutDTO> UpdateAbout(AboutDTO About);
