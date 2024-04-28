@@ -22,6 +22,7 @@ namespace RentACar.Persistence.Extensions
                 var email = new MimeMessage();
                 email.From.Add(MailboxAddress.Parse("info@eaglerentacar.com.tr"));
                 email.To.Add(MailboxAddress.Parse(mailSender.SenderMail));
+                email.To.Add(MailboxAddress.Parse("eagledenizcilik@outlook.com.tr"));
                 email.Subject = mailSender.Subject;
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mailSender.Content };
                 using var smtp = new SmtpClient();

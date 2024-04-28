@@ -108,7 +108,7 @@
         try
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/reservation/delete", Id, token);
+            bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/reserve/delete", Id, token);
             if (deleted)
             {
                 await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlandı", 4);

@@ -2,6 +2,7 @@
 @page "/admin/cars/edit/{CarId:guid}"
 @layout MainAdminLayout
 @using Blazored.LocalStorage
+@using Microsoft.AspNetCore.SignalR.Client
 @using Morris.Blazor.FluentValidation
 @using Morris.Blazor.Validation
 @using RentACar.Application.CustomExceptions
@@ -174,19 +175,24 @@
     long? fileSize;
     private CarDTO carModel = new CarDTO();
     List<EnumToName> FuelTypes = new List<EnumToName>();
+    private HubConnection _hubConnection;
     protected async override Task OnInitializedAsync()
     {
+
         foreach (FuelType item in Enum.GetValues(typeof(FuelType)))
         {
             FuelTypes.Add(new EnumToName { Name = item.ToString(), Id = item });
         }
- 
+
         if (CarId != null && CarId != Guid.Empty)
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
             carModel = await HttpClient.GetServiceResponseAsync<CarDTO>("api/car/CarById/" + CarId, token, true);
         }
+        var hub = NavigationManager.ToAbsoluteUri("/signalrhub");
+        _hubConnection = new HubConnectionBuilder().WithUrl(hub).Build();
 
+        await _hubConnection.StartAsync();
 
     }
     async Task editOrUpdate(CarDTO carDTO)
@@ -212,6 +218,7 @@
             string token = await localStorageService.GetItemAsStringAsync("token");
 
             carModel = await HttpClient.PostGetServiceResponseAsync<CarDTO, CarDTO>(url, carModel, token, true);
+            if (IsConnected) await SenMessage();
 
             NavigationManager.NavigateTo("/admin/cars");
         }
@@ -228,12 +235,18 @@
 
 
     }
+    Task SenMessage() => _hubConnection.SendAsync("SendMessage");
+    public bool IsConnected => _hubConnection.State == HubConnectionState.Connected;
     async Task SubmitForm(EditContext editContext)
     {
         if (editContext.Validate())
         {
             await editOrUpdate((CarDTO)editContext.Model);
         }
+    }
+    public void Dispose()
+    {
+        _ = _hubConnection.DisposeAsync();
     }
     void goBackGroupList()
     {

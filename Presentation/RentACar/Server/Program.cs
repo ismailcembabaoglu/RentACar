@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using RentACar.Persistence.Context;
 using RentACar.Persistence.Extensions;
+using RentACar.Persistence.Hubs;
 using RentACar.Server.Middlewares;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,10 @@ var loggerFactory = LoggerFactory.Create(builder => {
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.ConfigureMapping();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+});
 builder.Services.AddSwaggerGen(c =>
 {
     var jwtSecurityScheme = new OpenApiSecurityScheme
@@ -47,7 +52,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 builder.Services.AddApplicationServices();
-
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<RentACarPsqlDbContext>(config =>
 {
    
@@ -85,7 +90,7 @@ builder.Services.AddAuthentication(opt =>
 });
 
 var app = builder.Build();
-
+app.UseResponseCompression();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -121,6 +126,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<SignalRHub>("/signalrhub");
 app.MapFallbackToFile("index.html");
 
 app.Run();

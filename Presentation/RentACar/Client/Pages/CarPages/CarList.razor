@@ -1,5 +1,6 @@
 ﻿@page "/admin/Cars"
 @using Blazored.LocalStorage
+@using Microsoft.AspNetCore.SignalR.Client
 @using RentACar.Application.CustomExceptions
 @using RentACar.Application.DTOs
 @using RentACar.Client.Utils
@@ -9,7 +10,7 @@
 @if (Cars != null)
 {
 
-   
+
     <RadzenDataGrid AllowFiltering="true"
                     FilterMode="FilterMode.Simple"
                     ShowCellDataAsTooltip="true"
@@ -36,7 +37,7 @@
             <RadzenDataGridColumn TItem="CarDTO" Property="Id" Title="Id" />
 
             <RadzenDataGridColumn TItem="CarDTO" Property="CarNameModel" Title="Araba Adı" />
-            <RadzenDataGridColumn TItem="CarDTO" Property="Person" Title="Max Kişi Sayısı"/>
+            <RadzenDataGridColumn TItem="CarDTO" Property="Person" Title="Max Kişi Sayısı" />
 
             <RadzenDataGridColumn TItem="CarDTO" Property="Luggage" Title="Bagaj Kapasite" />
             <RadzenDataGridColumn TItem="CarDTO" Property="CarPrice" Title="Fiyat" />
@@ -66,12 +67,31 @@
     ILocalStorageService localStorageService { get; set; }
 
     protected IEnumerable<CarDTO> Cars;
-
+    private HubConnection _hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadList();
+        var hub = NavigationManager.ToAbsoluteUri("/signalrhub");
+        _hubConnection = new HubConnectionBuilder().WithUrl(hub).Build();
+        await _hubConnection.StartAsync();
+        _hubConnection.On("Receivemessage",  () =>
+        {
 
+            CallloadData();
+            StateHasChanged();
+        });
+    if (Cars is null)
+        {
+            await LoadList();
+        }
+        
+    }
+    private void CallloadData()
+    {
+        Task.Run(async () =>
+        {
+            await LoadList();
+        });
     }
     protected async Task LoadList()
     {
@@ -79,8 +99,10 @@
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
             Cars = await Client.GetServiceResponseAsync<List<CarDTO>>("/api/car/cars", token);
+            StateHasChanged();
+
         }
-        catch(ApiException ex)
+        catch (ApiException ex)
         {
             await ModalManager.ShowMessageAsync("Api Exception", ex.Message);
         }
@@ -90,13 +112,19 @@
             await ModalManager.ShowMessageAsync("Exception Exception", ex.Message);
         }
     }
+
+    public async void DisposeAsync()
+    {
+        await _hubConnection.DisposeAsync();
+
+    }
     protected void goCreateCarPage()
     {
         NavigationManager.NavigateTo("/admin/cars/add");
     }
     protected void goUpdateCarPage(Guid Id)
     {
-        NavigationManager.NavigateTo("/admin/cars/edit/"+Id);
+        NavigationManager.NavigateTo("/admin/cars/edit/" + Id);
     }
     protected async Task DeleteCar(Guid Id)
     {
@@ -108,15 +136,15 @@
             bool deleted = await Client.PostGetServiceResponseAsync<bool, Guid>("/api/car/delete", Id, token);
             if (deleted)
             {
-                await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlandı",4);
-                NavigationManager.NavigateTo("/admin/cars",true);
+                await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlandı", 4);
+                NavigationManager.NavigateTo("/admin/cars", true);
             }
             else
             {
-                await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlanamadı!!!!!!",7);
+                await ModalManager.ShowMessageAsync("Bildirim", "Silme İşlemi Tamamlanamadı!!!!!!", 7);
             }
         }
-        catch(ApiException ex)
+        catch (ApiException ex)
         {
             await ModalManager.ShowMessageAsync("Api Exception", ex.Message);
         }

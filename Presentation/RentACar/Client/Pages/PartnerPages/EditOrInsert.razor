@@ -12,7 +12,7 @@
     <Validate ValidationProperties=@(ValidationProperties.Set.FluentValidator<PartnerValidator>()) OnTransformModel=OnTransformModel />
     <RadzenColumn Size="12" Style="width:%60" SizeMD="6">
         <RadzenStack>
-            <RadzenFieldset Text="Hizmet Ekleme Sayfası">
+            <RadzenFieldset Text="Referans Ekleme Sayfası">
                 <RadzenStack Gap="1rem">
 
                     <RadzenRow AlignItems="AlignItems.Center">
@@ -83,7 +83,7 @@
             // Update
             if (PartnerId != null && PartnerId != Guid.Empty)
             {
-                url = "api/Service/update";
+                url = "api/partner/update";
                 partner.UpdatedDate = DateTime.Now;
                 partner.UpdatedUser = await localStorageService.GetItemAsStringAsync("email");
             }
